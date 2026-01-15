@@ -2,11 +2,18 @@
 
 ## Overview
 
-INT Platform Explorer is an enterprise decision-support tool for comparing AI platforms. It enables organizations to evaluate 16 AI platforms across 25 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations.
+INT Platform Explorer is an enterprise decision-support tool for comparing AI platforms. It enables organizations to evaluate 22 AI platforms across 20 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations.
 
 The application is built as a React single-page application with an Express backend, using a tabbed interface with seven main sections: Explorer (browse/filter platforms), Comparison (side-by-side evaluation), Matrix (capability grid), ROI Calculator, Strategy (tiered recommendations), Assessment (AI readiness wizard), and Profile Builder (Claude configuration guide).
 
 ## Recent Changes (January 15, 2026)
+
+**Platform Expansion:**
+- Expanded from 16 to 22 AI platforms (added Claude Opus 4, Mistral Large 2, Meta Llama 3.1, xAI Grok 2, DeepSeek V3, Groq LPU)
+- Extended capability matrix from 10 to 20 dimensions (added vision, audio, functionCalling, jsonReliability, dataPrivacy, onPremOption, slaAvailability, contextRecall, timeToFirstToken, tokensPerSecond)
+- Extended ROI benchmarks and pricing data to cover all 22 platforms across 10 departments
+- Added Claude model variants to Profile Builder: 5 models (Opus 4.5, Opus 4.0, Sonnet 4.5, Sonnet 4.0, Haiku 3.5) with new Models sub-tab
+- Normalized platform IDs to hyphen-case format across all data files for consistency
 
 **Security Enhancements:**
 - Added Helmet middleware with CSP configuration (environment-aware for dev HMR)

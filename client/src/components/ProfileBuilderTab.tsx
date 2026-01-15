@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { 
   ROLES, SECURITY_FEATURES, KEY_CAPABILITIES, ROLE_PROFILES, DEPLOYMENT_PHASES,
+  CLAUDE_MODELS, RECOMMENDED_MODELS,
   type Role
 } from "@/lib/profileData";
 
@@ -339,6 +340,130 @@ ESCALATION PROTOCOL
   );
 }
 
+function ModelsSection({ selectedRole }: { selectedRole: Role }) {
+  const recommendedIds = RECOMMENDED_MODELS[selectedRole];
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case 'Premium': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'Balanced': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+      case 'Fast': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+      default: return 'bg-muted text-muted-foreground';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-950/20 border-violet-200 dark:border-violet-800">
+        <CardContent className="pt-6">
+          <h3 className="text-lg font-semibold mb-2">Claude Model Selection</h3>
+          <p className="text-muted-foreground">
+            Choose the right Claude model for your use case. {selectedRole !== 'All' && `Recommended models for ${selectedRole} are highlighted below.`}
+          </p>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {CLAUDE_MODELS.map(model => {
+          const isRecommended = recommendedIds.includes(model.id);
+          return (
+            <Card 
+              key={model.id} 
+              className={`relative ${isRecommended ? 'ring-2 ring-primary' : ''}`}
+              data-testid={`card-model-${model.id}`}
+            >
+              {isRecommended && (
+                <div className="absolute -top-2 -right-2">
+                  <Badge className="bg-primary text-primary-foreground">Recommended</Badge>
+                </div>
+              )}
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base" data-testid={`text-model-name-${model.id}`}>{model.name}</CardTitle>
+                  <Badge className={getTierColor(model.tier)}>{model.tier}</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">{model.bestFor}</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-2 text-center text-sm">
+                  <div className="p-2 bg-muted rounded">
+                    <div className="font-medium">{model.speed}</div>
+                    <div className="text-xs text-muted-foreground">Speed</div>
+                  </div>
+                  <div className="p-2 bg-muted rounded">
+                    <div className="font-medium">{model.cost}</div>
+                    <div className="text-xs text-muted-foreground">Cost</div>
+                  </div>
+                  <div className="p-2 bg-muted rounded">
+                    <div className="font-medium text-xs">{model.contextWindow.split(' ')[0]}</div>
+                    <div className="text-xs text-muted-foreground">Context</div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Capabilities</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {model.capabilities.map((cap, i) => (
+                      <Badge key={i} variant="outline" className="text-xs">{cap}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="text-xs text-muted-foreground border-t pt-3">
+                  <div className="flex justify-between">
+                    <span>Input:</span>
+                    <span className="font-mono">${model.pricing.input}/1M tokens</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Output:</span>
+                    <span className="font-mono">${model.pricing.output}/1M tokens</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Model Selection Guide</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-medium mb-2 text-purple-800 dark:text-purple-300">Premium (Opus)</h4>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                <li>Complex architecture decisions</li>
+                <li>Security audits & deep analysis</li>
+                <li>Extended thinking tasks</li>
+                <li>Multi-step reasoning</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h4 className="font-medium mb-2 text-blue-800 dark:text-blue-300">Balanced (Sonnet)</h4>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                <li>Daily coding & development</li>
+                <li>Document analysis</li>
+                <li>General productivity</li>
+                <li>Agentic workflows</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+              <h4 className="font-medium mb-2 text-green-800 dark:text-green-300">Fast (Haiku)</h4>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                <li>High-volume processing</li>
+                <li>Real-time chat responses</li>
+                <li>Quick classifications</li>
+                <li>Budget-conscious tasks</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function DeploymentSection() {
   const [completedItems, setCompletedItems] = useState<string[]>([]);
 
@@ -431,8 +556,9 @@ export function ProfileBuilderTab() {
       </div>
 
       <Tabs value={activeSection} onValueChange={setActiveSection}>
-        <TabsList className="grid grid-cols-4 w-full max-w-lg">
+        <TabsList className="grid grid-cols-5 w-full max-w-2xl">
           <TabsTrigger value="overview" data-testid="tab-profile-overview">Overview</TabsTrigger>
+          <TabsTrigger value="models" data-testid="tab-profile-models">Models</TabsTrigger>
           <TabsTrigger value="roles" data-testid="tab-profile-roles">Roles</TabsTrigger>
           <TabsTrigger value="baseline" data-testid="tab-profile-baseline">Baseline</TabsTrigger>
           <TabsTrigger value="deploy" data-testid="tab-profile-deploy">Deploy</TabsTrigger>
@@ -440,6 +566,10 @@ export function ProfileBuilderTab() {
 
         <TabsContent value="overview" className="mt-6">
           <OverviewSection />
+        </TabsContent>
+
+        <TabsContent value="models" className="mt-6">
+          <ModelsSection selectedRole={selectedRole} />
         </TabsContent>
 
         <TabsContent value="roles" className="mt-6">

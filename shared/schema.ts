@@ -12,6 +12,16 @@ export interface PlatformCapabilities {
   enterpriseFeatures: number;
   developerExperience: number;
   documentation: number;
+  vision: number;
+  audio: number;
+  functionCalling: number;
+  jsonReliability: number;
+  dataPrivacy: number;
+  onPremOption: number;
+  slaAvailability: number;
+  contextRecall: number;
+  timeToFirstToken: number;
+  tokensPerSecond: number;
 }
 
 export interface Platform {
