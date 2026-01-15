@@ -1,5 +1,97 @@
 export type Role = 'All' | 'Finance' | 'Sales' | 'Engineering' | 'Marketing' | 'Operations' | 'HR';
 
+export interface ClaudeModel {
+  id: string;
+  name: string;
+  tier: 'Premium' | 'Balanced' | 'Fast';
+  version: string;
+  contextWindow: string;
+  speed: 'Slow' | 'Medium' | 'Fast';
+  cost: '$$$' | '$$' | '$';
+  bestFor: string;
+  capabilities: string[];
+  pricing: { input: number; output: number };
+  color: string;
+}
+
+export const CLAUDE_MODELS: ClaudeModel[] = [
+  {
+    id: 'opus-4-5',
+    name: 'Claude Opus 4.5',
+    tier: 'Premium',
+    version: '4.5',
+    contextWindow: '200K tokens',
+    speed: 'Slow',
+    cost: '$$$',
+    bestFor: 'Complex architecture, deep analysis, extended thinking',
+    capabilities: ['Extended thinking', 'Complex reasoning', 'Computer use', 'Security audits'],
+    pricing: { input: 5, output: 25 },
+    color: '#FF0066'
+  },
+  {
+    id: 'opus-4-0',
+    name: 'Claude Opus 4.0',
+    tier: 'Premium',
+    version: '4.0',
+    contextWindow: '200K tokens',
+    speed: 'Slow',
+    cost: '$$$',
+    bestFor: 'Deep code review, security audits, thorough analysis',
+    capabilities: ['Deep review', 'Security analysis', 'Architecture design'],
+    pricing: { input: 15, output: 75 },
+    color: '#CC0055'
+  },
+  {
+    id: 'sonnet-4-5',
+    name: 'Claude Sonnet 4.5',
+    tier: 'Balanced',
+    version: '4.5',
+    contextWindow: '200K (1M beta)',
+    speed: 'Medium',
+    cost: '$$',
+    bestFor: 'Best balance, coding, agentic workflows',
+    capabilities: ['Coding', 'Agents', 'Long-context', 'Tool use'],
+    pricing: { input: 3, output: 15 },
+    color: '#0066FF'
+  },
+  {
+    id: 'sonnet-4-0',
+    name: 'Claude Sonnet 4.0',
+    tier: 'Balanced',
+    version: '4.0',
+    contextWindow: '200K tokens',
+    speed: 'Medium',
+    cost: '$$',
+    bestFor: 'General purpose, reliable coding, stable performance',
+    capabilities: ['Coding', 'Analysis', 'Documentation', 'Tool use'],
+    pricing: { input: 3, output: 15 },
+    color: '#0055DD'
+  },
+  {
+    id: 'haiku-3-5',
+    name: 'Claude Haiku 3.5',
+    tier: 'Fast',
+    version: '3.5',
+    contextWindow: '200K tokens',
+    speed: 'Fast',
+    cost: '$',
+    bestFor: 'High-volume, quick tasks, real-time responses',
+    capabilities: ['Fast inference', 'Chat', 'Classification', 'Summarization'],
+    pricing: { input: 0.25, output: 1.25 },
+    color: '#00AAFF'
+  }
+];
+
+export const RECOMMENDED_MODELS: Record<Role, string[]> = {
+  'All': ['sonnet-4-5', 'sonnet-4-0', 'haiku-3-5'],
+  'Finance': ['sonnet-4-5', 'opus-4-0'],
+  'Sales': ['sonnet-4-5', 'haiku-3-5'],
+  'Engineering': ['opus-4-5', 'sonnet-4-5', 'opus-4-0'],
+  'Marketing': ['sonnet-4-5', 'haiku-3-5'],
+  'Operations': ['sonnet-4-5', 'haiku-3-5'],
+  'HR': ['sonnet-4-5', 'haiku-3-5']
+};
+
 export const ROLES: { id: Role; label: string; description: string }[] = [
   { id: 'All', label: 'All Roles', description: 'View content for all departments' },
   { id: 'Finance', label: 'Finance', description: 'Budget analysis, forecasting, financial reporting' },
