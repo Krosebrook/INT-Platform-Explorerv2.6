@@ -53,7 +53,6 @@ function PlatformExplorer() {
         {/* Gradient Overlay for Readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,14,28,0.75)] via-[rgba(20,28,50,0.70)] to-[rgba(54,32,8,0.65)]" />
       </div>
-      
       {/* Scrollable Foreground Content */}
       <div className="relative z-10">
       <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
@@ -161,7 +160,7 @@ function PlatformExplorer() {
                 data-testid="tab-assessment"
               >
                 <ClipboardCheck className="w-4 h-4" />
-                <span className="hidden sm:inline">Assess</span>
+                <span className="hidden sm:inline">Assests</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="profile" 
