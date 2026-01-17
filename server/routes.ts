@@ -40,9 +40,11 @@ export async function registerRoutes(
         connectSrc: isDev 
           ? ["'self'", "https:", "ws:", "wss:"] 
           : ["'self'", "https:"],
+        frameAncestors: ["'self'", "https://*.replit.dev", "https://*.replit.app", "https://replit.com"],
       },
     },
     crossOriginEmbedderPolicy: false,
+    frameguard: false,
   }));
 
   app.use("/api", apiLimiter);
