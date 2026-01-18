@@ -2,14 +2,22 @@
 
 ## Overview
 
-INT Platform Explorer is an enterprise decision-support tool for C-suite and upper management to evaluate AI platforms for a new AIaaS department. It enables organizations to evaluate 32 AI platforms across 20 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations. The application also includes a comprehensive Persona Profile Builder with 72 INT Inc. personas mapped to optimal Claude configurations (5 model variants).
+INT Platform Explorer is an enterprise decision-support tool for C-suite and upper management to evaluate AI platforms for a new AIaaS department. It enables organizations to evaluate 50 AI platforms across 20 capability dimensions, organized into 8 ecosystem suites (Anthropic, OpenAI, Microsoft, Google, Automation, LangChain, Open Source, Independent). Features include ROI calculation, tiered strategic recommendations, and a comprehensive Persona Profile Builder with 72 INT Inc. personas mapped to optimal Claude configurations (5 model variants).
 
-The application is built as a React single-page application with an Express backend, using a tabbed interface with seven main sections: Explorer (browse/filter platforms), Comparison (side-by-side evaluation), Matrix (capability grid), ROI Calculator, Strategy (tiered recommendations), Assessment (AI readiness wizard), and Profile Builder (Claude configuration guide with Personas sub-tab).
+The application is built as a React single-page application with an Express backend, using a tabbed interface with seven main sections: Explorer (browse/filter platforms by ecosystem), Comparison (side-by-side evaluation), Matrix (capability grid with ecosystem grouping), ROI Calculator, Strategy (tiered recommendations with ecosystem coverage), Assessment (AI readiness wizard), and Profile Builder (Claude configuration guide with Personas sub-tab).
 
 ## Recent Changes (January 18, 2026)
 
-**Platform Expansion to 32 Platforms:**
-- Added 10 new enterprise AI platforms: Glean (Enterprise Search), Vertex AI (Google Cloud), Salesforce Agentforce (CRM AI), Databricks (Data+AI Platform), Writer (Enterprise Content AI), Together AI (Inference Platform), Cursor (AI Code Editor), Dataiku (Data Science Platform), Cognigy (Conversational AI), Moveworks (IT Service Automation)
+**Ecosystem Framework & Platform Expansion to 50 Platforms:**
+- Created 8 ecosystem suites: Anthropic/Claude, OpenAI, Microsoft, Google, Automation, LangChain, Open Source, Independent
+- Added 18 new platforms including automation tools (Zapier, Make.com, Pipedream, n8n) and ecosystem products (LangChain, LangGraph, LangSmith, ChatGPT Plus, GPT Store, Power Platform, Dynamics 365 Copilot, Microsoft 365 Copilot, Google AI Studio, Duet AI, NotebookLM)
+- Added ecosystem filtering to Explorer, Matrix, and Strategy tabs with colored badges
+- Platform cards now display ecosystem badges and specialty tags (14 specialty categories: coding, content, automation, enterprise-search, analytics, agents, multimodal, voice, security, workflow, integration, data-science, conversational, it-service)
+- Updated strategy tiers with ecosystem coverage analysis showing which ecosystems are represented in each tier
+- Extended Platform schema with ecosystem, specialties, and compatibility fields
+
+**Previous Platform Expansion (32 Platforms):**
+- Added 10 enterprise AI platforms: Glean (Enterprise Search), Vertex AI (Google Cloud), Salesforce Agentforce (CRM AI), Databricks (Data+AI Platform), Writer (Enterprise Content AI), Together AI (Inference Platform), Cursor (AI Code Editor), Dataiku (Data Science Platform), Cognigy (Conversational AI), Moveworks (IT Service Automation)
 - Updated strategy tiers to include new platforms in Foundation (Tier 1) and Specialization (Tier 2) categories
 
 **Persona Profile Builder:**

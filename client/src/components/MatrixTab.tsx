@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { platforms, capabilityLabels, matrixFeatures } from "@/lib/platformData";
-import type { PlatformCapabilities } from "@shared/schema";
-import { Grid3X3, Info } from "lucide-react";
+import { ecosystems, ecosystemLabels, getEcosystemById } from "@/lib/ecosystemData";
+import type { PlatformCapabilities, EcosystemType } from "@shared/schema";
+import { Grid3X3, Info, Layers } from "lucide-react";
 
 const categories = ["All", "Core Capabilities", "Enterprise & Cost"];
 
@@ -29,10 +30,17 @@ function ScoreCell({ score }: { score: number }) {
 
 export function MatrixTab() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeEcosystem, setActiveEcosystem] = useState<EcosystemType | "All">("All");
 
   const visibleFeatures = activeCategory === "All"
     ? matrixFeatures.flatMap((group) => group.features)
     : matrixFeatures.find((g) => g.category === activeCategory)?.features || [];
+    
+  const filteredPlatforms = useMemo(() => {
+    return platforms.filter(p => 
+      activeEcosystem === "All" || p.ecosystem === activeEcosystem
+    );
+  }, [activeEcosystem]);
 
   return (
     <div className="space-y-6">
@@ -62,6 +70,36 @@ export function MatrixTab() {
               </Badge>
             ))}
           </div>
+        </div>
+      </div>
+      
+      <div className="flex flex-wrap items-center gap-2">
+        <Layers className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">Ecosystem:</span>
+        <div className="flex flex-wrap gap-1.5">
+          <Badge
+            variant={activeEcosystem === "All" ? "default" : "outline"}
+            className="cursor-pointer hover-elevate transition-all"
+            onClick={() => setActiveEcosystem("All")}
+            data-testid="filter-matrix-ecosystem-all"
+          >
+            All ({platforms.length})
+          </Badge>
+          {ecosystems.map((eco) => {
+            const count = platforms.filter(p => p.ecosystem === eco.id).length;
+            return (
+              <Badge
+                key={eco.id}
+                variant={activeEcosystem === eco.id ? "default" : "outline"}
+                className="cursor-pointer hover-elevate transition-all"
+                onClick={() => setActiveEcosystem(eco.id as EcosystemType)}
+                style={activeEcosystem === eco.id ? { backgroundColor: eco.logoColor, borderColor: eco.logoColor } : undefined}
+                data-testid={`filter-matrix-ecosystem-${eco.id}`}
+              >
+                {ecosystemLabels[eco.id as EcosystemType]} ({count})
+              </Badge>
+            );
+          })}
         </div>
       </div>
 
@@ -106,13 +144,14 @@ export function MatrixTab() {
                   </tr>
                 </thead>
                 <tbody>
-                  {platforms.map((platform, idx) => {
+                  {filteredPlatforms.map((platform, idx) => {
                     const avg = Math.round(
                       visibleFeatures.reduce(
                         (sum, f) => sum + platform.capabilities[f as keyof PlatformCapabilities],
                         0
                       ) / visibleFeatures.length
                     );
+                    const ecoData = platform.ecosystem ? getEcosystemById(platform.ecosystem) : null;
 
                     return (
                       <tr 
@@ -132,7 +171,17 @@ export function MatrixTab() {
                             </div>
                             <div className="min-w-0">
                               <p className="font-medium text-sm truncate">{platform.name}</p>
-                              <p className="text-xs text-muted-foreground">{platform.category}</p>
+                              <div className="flex items-center gap-1">
+                                <span className="text-xs text-muted-foreground">{platform.category}</span>
+                                {ecoData && (
+                                  <span 
+                                    className="text-xs font-medium"
+                                    style={{ color: ecoData.logoColor }}
+                                  >
+                                    • {ecosystemLabels[platform.ecosystem!]}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </td>

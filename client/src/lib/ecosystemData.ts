@@ -6,14 +6,14 @@ export const ecosystems: Ecosystem[] = [
     name: "Anthropic / Claude",
     description: "Constitutional AI with industry-leading safety, reasoning, and coding capabilities.",
     logoColor: "#D97706",
-    platformIds: ["claude-sonnet", "claude-opus", "anthropic-api", "aws-bedrock"]
+    platformIds: ["claude-sonnet", "claude-opus", "anthropic-api", "aws-bedrock", "claude-web"]
   },
   {
     id: "openai",
     name: "OpenAI",
     description: "The most widely adopted AI ecosystem with ChatGPT, GPT-4, and extensive enterprise features.",
     logoColor: "#10A37F",
-    platformIds: ["chatgpt-enterprise", "openai-api", "azure-openai", "chatgpt-plus", "gpt-store"]
+    platformIds: ["chatgpt-enterprise", "openai-api", "azure-openai", "chatgpt-plus", "gpt-store", "chatgpt-web"]
   },
   {
     id: "microsoft",
