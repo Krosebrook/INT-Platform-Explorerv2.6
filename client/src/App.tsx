@@ -232,11 +232,13 @@ function PlatformExplorer() {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
-              <span>16 Platforms</span>
+              <span>32 Platforms</span>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-              <span>25 Capability Dimensions</span>
+              <span>20 Capability Dimensions</span>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-              <span>Research-Backed ROI</span>
+              <span>72 Personas</span>
+              <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+              <span>5 Claude Models</span>
             </div>
             <p className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} INT Inc. All rights reserved.

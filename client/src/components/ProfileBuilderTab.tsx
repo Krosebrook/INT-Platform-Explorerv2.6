@@ -6,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
   Shield, Zap, Users, Lock, CheckCircle, AlertTriangle, BookOpen,
-  DollarSign, TrendingUp, Code, Megaphone, Settings, Copy, Check
+  DollarSign, TrendingUp, Code, Megaphone, Settings, Copy, Check, UserCircle
 } from "lucide-react";
 import { 
   ROLES, SECURITY_FEATURES, KEY_CAPABILITIES, ROLE_PROFILES, DEPLOYMENT_PHASES,
   CLAUDE_MODELS, RECOMMENDED_MODELS,
   type Role
 } from "@/lib/profileData";
+import { PersonaProfileBuilder } from "@/components/PersonaProfileBuilder";
 
 function RoleSelector({ selectedRole, onSelectRole }: { selectedRole: Role; onSelectRole: (role: Role) => void }) {
   return (
@@ -556,8 +557,12 @@ export function ProfileBuilderTab() {
       </div>
 
       <Tabs value={activeSection} onValueChange={setActiveSection}>
-        <TabsList className="grid grid-cols-5 w-full max-w-2xl">
+        <TabsList className="grid grid-cols-6 w-full max-w-3xl">
           <TabsTrigger value="overview" data-testid="tab-profile-overview">Overview</TabsTrigger>
+          <TabsTrigger value="personas" data-testid="tab-profile-personas" className="flex items-center gap-1">
+            <UserCircle className="w-3 h-3" />
+            <span>Personas</span>
+          </TabsTrigger>
           <TabsTrigger value="models" data-testid="tab-profile-models">Models</TabsTrigger>
           <TabsTrigger value="roles" data-testid="tab-profile-roles">Roles</TabsTrigger>
           <TabsTrigger value="baseline" data-testid="tab-profile-baseline">Baseline</TabsTrigger>
@@ -566,6 +571,10 @@ export function ProfileBuilderTab() {
 
         <TabsContent value="overview" className="mt-6">
           <OverviewSection />
+        </TabsContent>
+
+        <TabsContent value="personas" className="mt-6">
+          <PersonaProfileBuilder />
         </TabsContent>
 
         <TabsContent value="models" className="mt-6">
