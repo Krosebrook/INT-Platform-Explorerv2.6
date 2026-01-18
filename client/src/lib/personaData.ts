@@ -1956,7 +1956,7 @@ export const PERSONA_CATEGORIES: { section: PersonaSection; categories: PersonaC
 ];
 
 export function getClaudeRecommendation(persona: Persona): ClaudeRecommendation {
-  const { techProficiency, budgetTier, aiToolRecommendations, primaryGoals } = persona;
+  const { techProficiency, budgetTier, primaryGoals } = persona;
   
   let modelId = 'sonnet-4-5';
   let modelName = 'Claude Sonnet 4.5';
@@ -1964,30 +1964,36 @@ export function getClaudeRecommendation(persona: Persona): ClaudeRecommendation 
   let estimatedROI = '30-50% productivity gain';
   let implementationApproach = 'Phased rollout with pilot program';
   
-  if (techProficiency === 'Expert' && budgetTier === 'High') {
+  if (budgetTier === 'Ultimate' || (techProficiency === 'Strategic' && budgetTier === 'High')) {
     modelId = 'opus-4-5';
     modelName = 'Claude Opus 4.5';
-    rationale = 'Complex reasoning and extended thinking for technical leadership roles.';
+    rationale = 'Maximum capability for strategic decision-making at executive level with extended thinking.';
+    estimatedROI = '50-70% improvement in strategic analysis';
+    implementationApproach = 'Executive assistant integration with governance controls';
+  } else if (techProficiency === 'Expert' && budgetTier === 'High') {
+    modelId = 'opus-4-0';
+    modelName = 'Claude Opus 4.0';
+    rationale = 'Complex reasoning and deep analysis for technical leadership roles.';
     estimatedROI = '40-60% productivity gain on complex analysis';
     implementationApproach = 'Direct integration with development workflows';
   } else if (techProficiency === 'Expert' && budgetTier === 'Medium') {
-    modelId = 'opus-4-0';
-    modelName = 'Claude Opus 4.0';
-    rationale = 'Deep analysis and security review capabilities for technical specialists.';
+    modelId = 'sonnet-4-5';
+    modelName = 'Claude Sonnet 4.5';
+    rationale = 'Excellent reasoning and analysis capabilities at an efficient price point.';
     estimatedROI = '35-50% productivity gain';
     implementationApproach = 'Team-based adoption with specialized prompts';
+  } else if (techProficiency === 'Medium' && (budgetTier === 'Medium' || budgetTier === 'Low')) {
+    modelId = 'sonnet-4-0';
+    modelName = 'Claude Sonnet 4.0';
+    rationale = 'Reliable performance for standard business tasks with good cost efficiency.';
+    estimatedROI = '25-40% productivity gain';
+    implementationApproach = 'Department-wide rollout with training sessions';
   } else if (budgetTier === 'Low' || techProficiency === 'Novice') {
     modelId = 'haiku-3-5';
     modelName = 'Claude Haiku 3.5';
     rationale = 'Fast, cost-effective for high-volume routine tasks and entry-level users.';
     estimatedROI = '20-35% productivity gain';
     implementationApproach = 'Simple use cases first, expand as comfort grows';
-  } else if (budgetTier === 'Ultimate') {
-    modelId = 'opus-4-5';
-    modelName = 'Claude Opus 4.5';
-    rationale = 'Maximum capability for strategic decision-making at executive level.';
-    estimatedROI = '50-70% improvement in strategic analysis';
-    implementationApproach = 'Executive assistant integration with governance controls';
   }
   
   const securityConsiderations = [
