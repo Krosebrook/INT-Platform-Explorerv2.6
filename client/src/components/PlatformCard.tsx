@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Platform } from "@shared/schema";
-import { Plus, Check, TrendingUp } from "lucide-react";
+import { ecosystemLabels, specialtyLabels, getEcosystemById } from "@/lib/ecosystemData";
+import { Plus, Check, TrendingUp, Layers } from "lucide-react";
 
 interface PlatformCardProps {
   platform: Platform;
@@ -101,7 +102,46 @@ export function PlatformCard({ platform, isSelected, onToggleSelect, maxSelectio
           <Badge variant="outline" className={`text-xs ${getTierColor(platform.priority)}`}>
             {platform.priority}
           </Badge>
+          {platform.ecosystem && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge 
+                  variant="outline" 
+                  className="text-xs gap-1"
+                  style={{ 
+                    borderColor: getEcosystemById(platform.ecosystem)?.logoColor,
+                    color: getEcosystemById(platform.ecosystem)?.logoColor
+                  }}
+                >
+                  <Layers className="w-3 h-3" />
+                  {ecosystemLabels[platform.ecosystem]}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{getEcosystemById(platform.ecosystem)?.description}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
+        
+        {platform.specialties && platform.specialties.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {platform.specialties.slice(0, 3).map((specialty) => (
+              <Badge 
+                key={specialty} 
+                variant="secondary" 
+                className="text-xs px-1.5 py-0 h-5"
+              >
+                {specialtyLabels[specialty]}
+              </Badge>
+            ))}
+            {platform.specialties.length > 3 && (
+              <Badge variant="secondary" className="text-xs px-1.5 py-0 h-5">
+                +{platform.specialties.length - 3}
+              </Badge>
+            )}
+          </div>
+        )}
 
         <div className="space-y-2 text-xs">
           <div className="flex justify-between">
