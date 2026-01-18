@@ -24,10 +24,13 @@ export interface PlatformCapabilities {
   tokensPerSecond: number;
 }
 
+export type EcosystemType = "anthropic" | "openai" | "microsoft" | "google" | "automation" | "langchain" | "open-source" | "independent";
+export type SpecialtyType = "coding" | "content" | "automation" | "enterprise-search" | "analytics" | "agents" | "multimodal" | "voice" | "security" | "workflow" | "integration" | "data-science" | "conversational" | "it-service";
+
 export interface Platform {
   id: string;
   name: string;
-  category: "Foundation" | "Specialized" | "Enterprise" | "Developer" | "Productivity";
+  category: "Foundation" | "Specialized" | "Enterprise" | "Developer" | "Productivity" | "Automation";
   priority: "Tier 1" | "Tier 2" | "Tier 3";
   verdict: string;
   marketShare: string;
@@ -37,6 +40,17 @@ export interface Platform {
   targetUsers: string;
   capabilities: PlatformCapabilities;
   logoColor: string;
+  ecosystem?: EcosystemType;
+  specialties?: SpecialtyType[];
+  compatibility?: string[];
+}
+
+export interface Ecosystem {
+  id: EcosystemType;
+  name: string;
+  description: string;
+  logoColor: string;
+  platformIds: string[];
 }
 
 export interface ROIInputs {
