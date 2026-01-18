@@ -3,21 +3,24 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { PlatformCard } from "./PlatformCard";
 import { platforms } from "@/lib/platformData";
-import { Search, X, Filter, LayoutGrid } from "lucide-react";
+import { ecosystems, ecosystemLabels } from "@/lib/ecosystemData";
+import { Search, X, Filter, LayoutGrid, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { EcosystemType } from "@shared/schema";
 
 interface ExplorerTabProps {
   selectedPlatforms: string[];
   onToggleSelect: (id: string) => void;
 }
 
-const categories = ["All", "Foundation", "Specialized", "Enterprise", "Developer", "Productivity"];
+const categories = ["All", "Foundation", "Specialized", "Enterprise", "Developer", "Productivity", "Automation"];
 const tiers = ["All", "Tier 1", "Tier 2", "Tier 3"];
 
 export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeTier, setActiveTier] = useState("All");
+  const [activeEcosystem, setActiveEcosystem] = useState<EcosystemType | "All">("All");
 
   const filteredPlatforms = useMemo(() => {
     return platforms.filter((platform) => {
@@ -28,18 +31,20 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
       
       const matchesCategory = activeCategory === "All" || platform.category === activeCategory;
       const matchesTier = activeTier === "All" || platform.priority === activeTier;
+      const matchesEcosystem = activeEcosystem === "All" || platform.ecosystem === activeEcosystem;
 
-      return matchesSearch && matchesCategory && matchesTier;
+      return matchesSearch && matchesCategory && matchesTier && matchesEcosystem;
     });
-  }, [searchQuery, activeCategory, activeTier]);
+  }, [searchQuery, activeCategory, activeTier, activeEcosystem]);
 
   const clearFilters = () => {
     setSearchQuery("");
     setActiveCategory("All");
     setActiveTier("All");
+    setActiveEcosystem("All");
   };
 
-  const hasActiveFilters = searchQuery || activeCategory !== "All" || activeTier !== "All";
+  const hasActiveFilters = searchQuery || activeCategory !== "All" || activeTier !== "All" || activeEcosystem !== "All";
 
   return (
     <div className="space-y-6">
@@ -102,6 +107,33 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
                 </Badge>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Layers className="w-4 h-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">Ecosystem:</span>
+          <div className="flex flex-wrap gap-1.5">
+            <Badge
+              variant={activeEcosystem === "All" ? "default" : "outline"}
+              className="cursor-pointer hover-elevate transition-all"
+              onClick={() => setActiveEcosystem("All")}
+              data-testid="filter-ecosystem-all"
+            >
+              All
+            </Badge>
+            {ecosystems.map((eco) => (
+              <Badge
+                key={eco.id}
+                variant={activeEcosystem === eco.id ? "default" : "outline"}
+                className="cursor-pointer hover-elevate transition-all"
+                onClick={() => setActiveEcosystem(eco.id as EcosystemType)}
+                style={activeEcosystem === eco.id ? { backgroundColor: eco.logoColor, borderColor: eco.logoColor } : undefined}
+                data-testid={`filter-ecosystem-${eco.id}`}
+              >
+                {ecosystemLabels[eco.id as EcosystemType]}
+              </Badge>
+            ))}
           </div>
 
           {hasActiveFilters && (
