@@ -14,10 +14,11 @@ import { ROICalculator } from "@/components/ROICalculator";
 import { StrategyTab } from "@/components/StrategyTab";
 import { AssessmentTab } from "@/components/AssessmentTab";
 import { ProfileBuilderTab } from "@/components/ProfileBuilderTab";
+import { MicrosoftEcosystemTab } from "@/components/MicrosoftEcosystemTab";
 import { ErrorBoundary, TabErrorBoundary } from "@/components/ErrorBoundary";
 import { SkipLink } from "@/components/SkipLink";
 import { useAuth } from "@/hooks/use-auth";
-import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen, LogIn, LogOut, User } from "lucide-react";
+import { Compass, GitCompare, Grid3X3, Calculator, Star, Sparkles, ClipboardCheck, BookOpen, LogIn, LogOut, User, Building2 } from "lucide-react";
 import sunsetBackground from "@assets/generated_images/sunset_landscape_with_orange_sun.png";
 
 function PlatformExplorer() {
@@ -170,6 +171,14 @@ function PlatformExplorer() {
                 <BookOpen className="w-4 h-4" />
                 <span className="hidden sm:inline">Profile</span>
               </TabsTrigger>
+              <TabsTrigger 
+                value="microsoft" 
+                className="flex-1 h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none gap-2"
+                data-testid="tab-microsoft"
+              >
+                <Building2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Microsoft</span>
+              </TabsTrigger>
             </TabsList>
           </div>
         </div>
@@ -214,6 +223,11 @@ function PlatformExplorer() {
           <TabsContent value="profile" className="mt-0">
             <TabErrorBoundary>
               <ProfileBuilderTab />
+            </TabErrorBoundary>
+          </TabsContent>
+          <TabsContent value="microsoft" className="mt-0">
+            <TabErrorBoundary>
+              <MicrosoftEcosystemTab />
             </TabErrorBoundary>
           </TabsContent>
         </main>
