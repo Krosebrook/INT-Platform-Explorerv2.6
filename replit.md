@@ -4,9 +4,19 @@
 
 INT Platform Explorer is an enterprise decision-support tool for C-suite and upper management to evaluate AI platforms for a new AIaaS department. It enables organizations to evaluate 50 AI platforms across 20 capability dimensions, organized into 8 ecosystem suites (Anthropic, OpenAI, Microsoft, Google, Automation, LangChain, Open Source, Independent). Features include ROI calculation, tiered strategic recommendations, and a comprehensive Persona Profile Builder with 72 INT Inc. personas mapped to optimal Claude configurations (5 model variants).
 
-The application is built as a React single-page application with an Express backend, using a tabbed interface with seven main sections: Explorer (browse/filter platforms by ecosystem), Comparison (side-by-side evaluation), Matrix (capability grid with ecosystem grouping), ROI Calculator, Strategy (tiered recommendations with ecosystem coverage), Assessment (AI readiness wizard), and Profile Builder (Claude configuration guide with Personas sub-tab).
+The application is built as a React single-page application with an Express backend, using a tabbed interface with eight main sections: Explorer (browse/filter platforms by ecosystem), Comparison (side-by-side evaluation), Matrix (capability grid with ecosystem grouping), ROI Calculator, Strategy (tiered recommendations with ecosystem coverage), Assessment (AI readiness wizard), Profile Builder (Claude configuration guide with Personas sub-tab), and Microsoft Deep Dive (comprehensive Microsoft ecosystem analysis).
 
 ## Recent Changes (January 18, 2026)
+
+**Microsoft Ecosystem Deep Dive Module:**
+- Created dedicated tab for comprehensive 2025 Microsoft AI ecosystem analysis based on research document
+- Added 10 Microsoft products with detailed data: Copilot Studio, Power Automate, Power Apps, Power Pages, Power BI, Dataverse, AI Builder, Azure AI Foundry, Agent 365, Frontier Program
+- Implemented product relationship visualization showing how Microsoft products integrate
+- Added licensing comparison table with pricing tiers for all Microsoft AI and Power Platform products
+- Created Frontier Firm readiness section with statistics and capability pillars
+- Added MCP (Model Context Protocol) section showing supported products and servers
+- Product cards include key features, AI capabilities, pricing models, target users, and compliance certifications
+- Sub-tabs: Products, Ecosystem Map, Licensing, Frontier Firm, MCP
 
 **Ecosystem Framework & Platform Expansion to 50 Platforms:**
 - Created 8 ecosystem suites: Anthropic/Claude, OpenAI, Microsoft, Google, Automation, LangChain, Open Source, Independent

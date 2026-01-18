@@ -22,7 +22,8 @@ import {
   TrendingUp,
   Users,
   Settings,
-  FileText
+  FileText,
+  X
 } from "lucide-react";
 import {
   microsoftProducts,
@@ -113,7 +114,7 @@ function ProductDetailModal({ product, onClose }: { product: MicrosoftProduct; o
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <Card className="max-w-3xl w-full max-h-[90vh] overflow-hidden" onClick={e => e.stopPropagation()}>
         <CardHeader className="border-b">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               <div className="p-3 rounded-lg bg-[#00A4EF]/10">
                 <Icon className="h-6 w-6 text-[#00A4EF]" />
@@ -135,7 +136,7 @@ function ProductDetailModal({ product, onClose }: { product: MicrosoftProduct; o
               </div>
             </div>
             <Button variant="ghost" size="icon" onClick={onClose} data-testid="button-close-detail">
-              ✕
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
@@ -326,19 +327,19 @@ function FrontierFirmSection() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center p-4 rounded-lg bg-background border">
+          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-adoption-rate">
             <div className="text-2xl font-bold text-purple-500">{frontierFirmCapabilities.statistics.adoptionRate}</div>
             <div className="text-sm text-muted-foreground">Adoption Rate</div>
           </div>
-          <div className="text-center p-4 rounded-lg bg-background border">
+          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-outcome-multiplier">
             <div className="text-2xl font-bold text-green-500">{frontierFirmCapabilities.statistics.outcomeMultiplier}</div>
             <div className="text-sm text-muted-foreground">Better Outcomes</div>
           </div>
-          <div className="text-center p-4 rounded-lg bg-background border">
+          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-leadership-urgency">
             <div className="text-2xl font-bold text-blue-500">{frontierFirmCapabilities.statistics.leadershipUrgency}</div>
             <div className="text-sm text-muted-foreground">Leaders See Urgency</div>
           </div>
-          <div className="text-center p-4 rounded-lg bg-background border">
+          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-integration-timeline">
             <div className="text-2xl font-bold text-orange-500">{frontierFirmCapabilities.statistics.agentIntegrationTimeline}</div>
             <div className="text-sm text-muted-foreground">Integration Timeline</div>
           </div>
@@ -389,7 +390,7 @@ function MCPSection() {
           <h4 className="font-semibold mb-3">MCP Servers</h4>
           <div className="grid gap-3">
             {mcpIntegrations.servers.map((server, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-lg border">
+              <div key={i} className="flex items-center justify-between gap-4 flex-wrap p-3 rounded-lg border" data-testid={`mcp-server-${i}`}>
                 <div>
                   <span className="font-medium">{server.name}</span>
                   <p className="text-sm text-muted-foreground">{server.description}</p>
@@ -469,7 +470,7 @@ function ProductRelationshipDiagram() {
               const source = microsoftProducts.find(p => p.id === rel.source);
               const target = microsoftProducts.find(p => p.id === rel.target);
               return (
-                <div key={i} className="flex items-center gap-2 text-sm p-2 rounded bg-muted/50">
+                <div key={i} className="flex items-center gap-2 flex-wrap text-sm p-2 rounded bg-muted/50" data-testid={`relationship-${i}`}>
                   <span className="font-medium">{source?.name}</span>
                   <ArrowRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                   <span className="font-medium">{target?.name}</span>
