@@ -8,6 +8,14 @@ The application is built as a React single-page application with an Express back
 
 ## Recent Changes (January 18, 2026)
 
+**Client Personas Module:**
+- Added B2B SaaS client personas (CMO, Ops Lead, Founder, Product Manager, Ecommerce Manager, VP Sales, CTO, Customer Success Lead)
+- Each persona includes goals, pain points, success metrics, AI use cases, tech proficiency, budget tier, and decision authority
+- AI tool recommendation engine maps personas to relevant platforms from all 50 based on role, goals, and industry context
+- Linked to INT Inc. services (Brand Strategy, UX/UI Design, Growth Engineering, AI Integration)
+- Case studies with outcomes: Northwind SaaS Growth (-2.9% churn), Contoso Retail Conversion (+18% CVR), Fabrikam Fintech Rebrand (2x pipeline)
+- Added as "Clients" sub-tab in Profile Builder
+
 **Microsoft Ecosystem Deep Dive Module:**
 - Created dedicated tab for comprehensive 2025 Microsoft AI ecosystem analysis based on research document
 - Added 10 Microsoft products with detailed data: Copilot Studio, Power Automate, Power Apps, Power Pages, Power BI, Dataverse, AI Builder, Azure AI Foundry, Agent 365, Frontier Program
