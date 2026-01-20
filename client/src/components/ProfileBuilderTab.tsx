@@ -14,6 +14,7 @@ import {
   type Role
 } from "@/lib/profileData";
 import { PersonaProfileBuilder } from "@/components/PersonaProfileBuilder";
+import { ClientPersonasSection } from "@/components/ClientPersonasSection";
 
 function RoleSelector({ selectedRole, onSelectRole }: { selectedRole: Role; onSelectRole: (role: Role) => void }) {
   return (
@@ -557,11 +558,15 @@ export function ProfileBuilderTab() {
       </div>
 
       <Tabs value={activeSection} onValueChange={setActiveSection}>
-        <TabsList className="grid grid-cols-6 w-full max-w-3xl">
+        <TabsList className="grid grid-cols-7 w-full max-w-4xl">
           <TabsTrigger value="overview" data-testid="tab-profile-overview">Overview</TabsTrigger>
           <TabsTrigger value="personas" data-testid="tab-profile-personas" className="flex items-center gap-1">
             <UserCircle className="w-3 h-3" />
             <span>Personas</span>
+          </TabsTrigger>
+          <TabsTrigger value="clients" data-testid="tab-profile-clients" className="flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            <span>Clients</span>
           </TabsTrigger>
           <TabsTrigger value="models" data-testid="tab-profile-models">Models</TabsTrigger>
           <TabsTrigger value="roles" data-testid="tab-profile-roles">Roles</TabsTrigger>
@@ -575,6 +580,10 @@ export function ProfileBuilderTab() {
 
         <TabsContent value="personas" className="mt-6">
           <PersonaProfileBuilder />
+        </TabsContent>
+
+        <TabsContent value="clients" className="mt-6">
+          <ClientPersonasSection />
         </TabsContent>
 
         <TabsContent value="models" className="mt-6">
