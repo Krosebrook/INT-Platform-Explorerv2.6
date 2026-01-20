@@ -1,0 +1,2 @@
+{"role": "CMO", "signal_type": "goal", "signal_text": "Improve brand differentiation to attract enterprise clients", "related_services": ["brand-strategy"], "industry_context": "SaaS", "evidence": {"url": "https://intinc.com/mock/services", "span": [0, 50]}, "confidence": "high"}
+{"role": "Ops Lead", "signal_type": "pain_point", "signal_text": "Complex onboarding flows reduce activation rates", "related_services": ["ux-ui-design"], "industry_context": "Retail", "evidence": {"url": "https://intinc.com/mock/case-studies", "span": [90, 120]}, "confidence": "medium"}

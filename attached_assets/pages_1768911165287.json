@@ -1,0 +1,16 @@
+[
+  {
+    "url": "https://intinc.com/mock/services",
+    "status": 200,
+    "title": "Services (Mock)",
+    "hash": "sha256:abc",
+    "notes": "ok"
+  },
+  {
+    "url": "https://intinc.com/mock/case-studies",
+    "status": 200,
+    "title": "Case Studies (Mock)",
+    "hash": "sha256:def",
+    "notes": "ok"
+  }
+]

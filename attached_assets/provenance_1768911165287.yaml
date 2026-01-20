@@ -1,0 +1,12 @@
+crawl_finished: '2025-09-29T05:40:38Z'
+crawl_started: '2025-09-29T05:40:38Z'
+depth_limit: 4
+disallowed_paths: []
+exclusions:
+- testimonials
+- forms
+- jobs
+page_limit: 200
+rate_limit: "\u22641 rps"
+robots_respected: true
+user_agent: PersonaCrawler/1.0 (+demo@example.com)
