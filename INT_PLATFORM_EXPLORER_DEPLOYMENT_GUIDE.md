@@ -18,8 +18,8 @@ This comprehensive guide covers deploying INT Platform Explorer to production us
 2. [High-Level Overview](#2-high-level-overview)
 3. [Prerequisites & Environment Setup](#3-prerequisites--environment-setup)
 4. [GitHub Repository Setup](#4-github-repository-setup)
-5. [Supabase Database Setup](#5-supabase-database-setup)
-6. [Vercel Deployment Configuration](#6-vercel-deployment-configuration)
+5. [Supabase Database Setup (Optional)](#5-database-setup-supabase---optional)
+6. [Deployment Platform Setup](#6-deployment-platform-setup) *(Railway/Render/Fly.io)*
 7. [CI/CD Pipeline (GitHub Actions)](#7-cicd-pipeline-github-actions)
 8. [Testing Suites](#8-testing-suites)
 9. [Monitoring & Observability](#9-monitoring--observability)
@@ -145,7 +145,9 @@ npm >= 10.x
 git >= 2.40
 
 # CLI Tools
-npm install -g vercel
+# npm install -g @railway/cli    # For Railway
+# npm install -g render-cli       # For Render  
+# curl -L https://fly.io/install.sh | sh  # For Fly.io
 npm install -g supabase
 npm install -g @anthropic-ai/claude-code  # Optional: Claude CLI
 ```
@@ -201,28 +203,25 @@ VITE_SENTRY_DSN=https://xxxxxx@sentry.io/xxxxxxx
 ### 4.1 Repository Structure
 ```
 int-platform-explorer/
-├── .github/
+├── .github/                     # CREATE: GitHub workflows and configs
 │   ├── workflows/
-│   │   ├── ci.yml              # Main CI pipeline
-│   │   ├── preview.yml         # Preview deployments
-│   │   ├── production.yml      # Production deployment
-│   │   └── scheduled-tests.yml # Nightly test runs
-│   ├── CODEOWNERS
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   └── dependabot.yml
-├── client/                      # React frontend
-├── server/                      # Express backend
-├── shared/                      # Shared TypeScript types
-├── tests/                       # CREATE: Test directories
-│   ├── unit/                   # Vitest unit tests (optional)
-│   ├── e2e/                    # Playwright E2E tests (optional)
-│   └── smoke/                  # Smoke tests (optional)
-├── scripts/                     # CREATE: Utility scripts
-│   └── rollback.sh             # Rollback helper (optional)
+│   │   └── ci.yml              # CREATE: Main CI pipeline (template in Section 7)
+│   ├── CODEOWNERS              # CREATE: Optional code ownership rules
+│   └── dependabot.yml          # CREATE: Optional dependency updates
+├── client/                      # EXISTS: React frontend
+├── server/                      # EXISTS: Express backend
+├── shared/                      # EXISTS: Shared TypeScript types
+├── tests/                       # CREATE: Test directories (optional)
+│   ├── unit/                   # Vitest unit tests
+│   ├── e2e/                    # Playwright E2E tests
+│   └── smoke/                  # Smoke tests
 ├── playwright.config.ts         # CREATE: If adding E2E tests
 ├── vitest.config.ts             # CREATE: If adding unit tests
 └── package.json                 # EXISTS: Add test scripts as needed
 ```
+
+> **Note**: Files marked "CREATE" need to be created. Templates are provided in this guide.
+> Files marked "EXISTS" are already part of the codebase.
 
 ### 4.2 Branch Protection Rules (GitHub Settings)
 
@@ -255,7 +254,9 @@ Branch: develop
 
 ---
 
-## 5. SUPABASE DATABASE SETUP
+## 5. DATABASE SETUP (SUPABASE - OPTIONAL)
+
+> **Note**: The application works with in-memory storage by default. This section is only needed if you want persistent data storage with Supabase.
 
 ### 5.1 Project Creation
 1. Go to [supabase.com](https://supabase.com) → New Project
@@ -743,10 +744,12 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 ```
 
-### 7.2 Scheduled Test Workflow
+### 7.2 Scheduled Test Workflow (OPTIONAL)
+
+Create this file only if you want automated daily smoke tests against production.
 
 ```yaml
-# .github/workflows/scheduled-tests.yml
+# .github/workflows/scheduled-tests.yml (CREATE - optional)
 
 name: Scheduled Tests
 
@@ -774,7 +777,7 @@ jobs:
       - name: Run smoke tests against production
         run: npm run test:smoke
         env:
-          BASE_URL: https://int-platform-explorer.vercel.app
+          BASE_URL: ${{ secrets.PRODUCTION_URL }}  # e.g., https://your-app.railway.app
       
       - name: Notify on failure
         if: failure()
@@ -788,10 +791,12 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
-### 7.3 Database Migration Workflow
+### 7.3 Database Migration Workflow (OPTIONAL)
+
+Create this file only if you're using Supabase and want automated migrations.
 
 ```yaml
-# .github/workflows/database-migration.yml
+# .github/workflows/database-migration.yml (CREATE - optional, only if using Supabase)
 
 name: Database Migration
 
@@ -1174,7 +1179,7 @@ test.describe('ROI Calculator', () => {
 
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.BASE_URL || 'https://int-platform-explorer.vercel.app';
+const BASE_URL = process.env.BASE_URL || 'https://your-app.railway.app';  // Update with your deployed URL
 
 test.describe('Production Smoke Tests', () => {
   test('homepage loads successfully', async ({ page }) => {
@@ -1389,24 +1394,12 @@ export const trackEvents = {
 };
 ```
 
-### 9.2 Vercel Analytics Integration
+### 9.2 Analytics Integration (Railway/Render/Fly.io)
 
-```typescript
-// client/src/main.tsx
+For Railway, Render, or Fly.io deployments, use Posthog (Section 9.1) for analytics.
+The Posthog setup above provides page views, user tracking, and custom events.
 
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
-
-function App() {
-  return (
-    <>
-      {/* Your app components */}
-      <Analytics />
-      <SpeedInsights />
-    </>
-  );
-}
-```
+> **Note**: Vercel Analytics only works on Vercel-hosted deployments and is not applicable here.
 
 ### 9.3 Logging Configuration
 
@@ -1493,7 +1486,7 @@ export const captureMessage = Sentry.captureMessage;
 ### 9.5 Monitoring Dashboard Metrics
 
 ```typescript
-// Recommended metrics to track in Posthog/Vercel Analytics
+// Recommended metrics to track in Posthog
 
 const METRICS = {
   // User Engagement
@@ -1522,7 +1515,7 @@ const METRICS = {
 ### 9.6 Alerting Rules
 
 ```yaml
-# Recommended alerting configuration (configure in Posthog/Vercel)
+# Recommended alerting configuration (configure in Posthog or your hosting platform)
 
 alerts:
   - name: High Error Rate
@@ -1970,7 +1963,7 @@ git push --force-with-lease origin main  # Force push
 |------|--------|--------|
 | 1 | Identify the broken deployment | Check error logs, user reports |
 | 2 | Communicate outage | Post status page update |
-| 3 | Initiate rollback | Use Vercel dashboard or CLI |
+| 3 | Initiate rollback | Use Railway/Render/Fly.io dashboard or CLI |
 | 4 | Verify rollback | Run smoke tests |
 | 5 | Check database state | Ensure data integrity |
 | 6 | Notify stakeholders | Update status page, Slack |
@@ -2047,7 +2040,7 @@ export default router;
       "name": "Fetch Platform Data",
       "type": "n8n-nodes-base.httpRequest",
       "parameters": {
-        "url": "https://int-platform-explorer.vercel.app/api/platforms",
+        "url": "https://your-app.railway.app/api/platforms",  // Update with your deployed URL
         "method": "GET"
       }
     },
@@ -2151,7 +2144,7 @@ syncPlatformsToNotion();
 
 ## 14. SECURITY & COMPLIANCE
 
-### 14.1 Security Headers (Already in vercel.json)
+### 14.1 Security Headers (Configure in Express server or reverse proxy)
 
 ```typescript
 // Additional security middleware
@@ -2205,16 +2198,17 @@ app.use('/api/roi', roiLimiter);
 ```bash
 # NEVER commit secrets to git!
 
-# Use Vercel environment variables for production
-vercel env add DATABASE_URL production
-vercel env add SUPABASE_SERVICE_ROLE_KEY production --sensitive
+# Set environment variables in your hosting platform dashboard
+# Railway: railway variables set DATABASE_URL=xxx
+# Render: Configure in Settings > Environment
+# Fly.io: fly secrets set DATABASE_URL=xxx
 
 # Use .env.local for local development (in .gitignore)
 cp .env.example .env.local
 
 # Rotate secrets regularly
 # 1. Generate new secret
-# 2. Add to Vercel (new name)
+# 2. Add to your hosting platform (new name)
 # 3. Update code to use new secret
 # 4. Deploy
 # 5. Remove old secret
@@ -2393,7 +2387,7 @@ async function handleRequest(request) {
 
 | Issue | Symptoms | Diagnosis | Solution |
 |-------|----------|-----------|----------|
-| Build fails on Vercel | "Module not found" error | Check import paths | Ensure path aliases in tsconfig match vite.config |
+| Build fails | "Module not found" error | Check import paths | Ensure path aliases in tsconfig match vite.config |
 | Database connection error | 500 errors on API calls | Check DATABASE_URL | Verify connection string, check Supabase status |
 | Slow initial load | >3s Time to Interactive | Check bundle size | Enable code splitting, lazy load tabs |
 | CORS errors | Browser console errors | API not returning headers | Add CORS middleware to Express |
@@ -2405,8 +2399,10 @@ async function handleRequest(request) {
 ### 16.2 Debug Commands
 
 ```bash
-# Check Vercel deployment logs
-vercel logs [deployment-url]
+# Check deployment logs
+# Railway: railway logs
+# Render: View in dashboard > Events
+# Fly.io: fly logs
 
 # Check Supabase logs
 supabase logs --project-ref $PROJECT_REF
@@ -2414,7 +2410,7 @@ supabase logs --project-ref $PROJECT_REF
 # Check database status
 psql $DATABASE_URL -c "SELECT 1"
 
-# Run local build to match Vercel
+# Run local build to match production
 npm run build && npm run start
 
 # Check for type errors
@@ -2504,7 +2500,7 @@ All notable changes to INT Platform Explorer will be documented in this file.
 ## [4.1.0] - 2026-01-22
 
 ### Added
-- Full-stack Vercel deployment documentation
+- Full-stack production deployment documentation
 - CI/CD pipeline with GitHub Actions
 - Posthog analytics integration
 - Redis caching with Upstash
@@ -2575,16 +2571,22 @@ railway up               # Deploy to Railway
 fly deploy               # Deploy to Fly.io
 render deploy            # Deploy to Render
 
-# Vercel (if you refactor to serverless)
-vercel                   # Deploy preview
-vercel --prod            # Deploy production
-vercel logs              # View logs
-vercel rollback          # Rollback deployment
+# Railway
+railway up               # Deploy
+railway logs             # View logs
+railway open             # Open in browser
+
+# Fly.io
+fly deploy               # Deploy
+fly logs                 # View logs
+fly open                 # Open in browser
 ```
 
 ### APPENDIX C: External Resources
 
-- [Vercel Documentation](https://vercel.com/docs)
+- [Railway Documentation](https://docs.railway.app)
+- [Render Documentation](https://render.com/docs)
+- [Fly.io Documentation](https://fly.io/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Upstash Redis Documentation](https://upstash.com/docs/redis)
 - [Posthog Documentation](https://posthog.com/docs)

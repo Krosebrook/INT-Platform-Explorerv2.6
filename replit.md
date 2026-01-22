@@ -73,6 +73,8 @@ The application is built as a React single-page application with an Express back
 - Created comprehensive README.md with setup instructions
 - Added CONTRIBUTING.md with development guidelines
 - Updated AUDIT_REPORT.md with resolved issues
+- INT_PLATFORM_EXPLORER_REBUILD_DOCUMENTATION.md - Complete rebuild specifications with 14 AI-ready implementation prompts
+- INT_PLATFORM_EXPLORER_DEPLOYMENT_GUIDE.md - Production deployment guide for Railway/Render/Fly.io with CI/CD, testing, monitoring
 
 ## User Preferences
 
