@@ -40,40 +40,47 @@ export interface ProductRelationship {
 export const microsoftProducts: MicrosoftProduct[] = [
   {
     id: "copilot-studio",
-    name: "Microsoft Copilot Studio",
+    name: "Microsoft Copilot Studio (Frontier)",
     category: "Agent Platform",
-    description: "SaaS conversational and autonomous agent platform with 1,400+ integrations via Power Platform connectors and Model Context Protocol (MCP).",
+    description: "Enterprise-grade autonomous agent platform with Frontier Program early access to GPT-5.2, Claude Opus 4.1, human-in-the-loop approvals, and 1,400+ integrations via MCP. Build conversational and autonomous agents that can trigger actions, approve workflows, and collaborate across the Microsoft 365 ecosystem.",
     keyFeatures: [
-      "Visual low-code canvas for agent creation",
-      "Natural language agent authoring",
+      "Natural language agent authoring (conversational design)",
+      "Expanded model choice: GPT-5.1, GPT-5.2, Claude Sonnet 4, Claude Opus 4.1",
+      "Human-in-the-loop (HITL) approvals via Outlook forms",
+      "Model Context Protocol (MCP) with 1,400+ connectors",
+      "One-click 'Copy to Copilot Studio' from Agent Builder",
       "Python code interpreter (GA)",
       "VS Code extension for pro-code editing",
-      "Multi-channel publishing (Teams, Web, Mobile, Voice)",
       "Agent2Agent (A2A) collaboration",
-      "Model Context Protocol (MCP) support"
+      "Computer Use automation capabilities",
+      "Agent evaluations and testing tools",
+      "Multi-channel: Teams, Web, Mobile, Voice, WhatsApp"
     ],
     aiCapabilities: [
-      "GPT-5 Chat (GA Nov 2025)",
-      "GPT-5.2 (Dec 2025)",
-      "Third-party models via Azure AI Foundry",
+      "GPT-5.2 priority access (Frontier Dec 2025)",
+      "Claude Opus 4.1 & Sonnet 4 (Frontier)",
+      "Work IQ grounding with enterprise permissions",
       "Generative answers from knowledge base",
-      "Generative actions for dynamic plugin selection"
+      "Generative actions for dynamic plugin selection",
+      "Deep reasoning with premium AI tools",
+      "Code generation and file creation"
     ],
     pricing: {
-      model: "Included with M365 Copilot or Pay-As-You-Go",
+      model: "Copilot Credits (Changed from messages Sept 2025)",
       tiers: [
-        { name: "M365 Copilot License", price: "Included", includes: ["Internal employee agents", "Unlimited builds"] },
-        { name: "Azure Pay-As-You-Go", price: "Usage-based", includes: ["Messages", "API calls", "External scenarios"] },
-        { name: "Copilot Credit Commit", price: "Up to 20% discount", includes: ["Pre-purchased credits", "Volume discounts"] }
+        { name: "Prepaid Capacity Pack", price: "$200/month for 25,000 credits", includes: ["Steady predictable usage", "Premium connectors"] },
+        { name: "Pay-As-You-Go", price: "$0.01 per credit", includes: ["Pilots", "Variable demand", "Seasonal spikes"] },
+        { name: "Pre-purchase Annual", price: "Up to 20% discount", includes: ["High-volume", "Multi-year planning"] },
+        { name: "M365 Copilot License", price: "$30/user/month", includes: ["Zero-rated internal agents", "Teams/SharePoint/Copilot Chat"] }
       ]
     },
-    integrations: ["Power Platform", "Microsoft 365", "Azure AI Foundry", "Microsoft Graph", "Dynamics 365", "ServiceNow", "Salesforce"],
-    targetUsers: ["Business Analysts", "Citizen Developers", "IT Admins", "Customer Service"],
+    integrations: ["Power Platform", "Microsoft 365", "Azure AI Foundry", "Microsoft Graph", "Dynamics 365", "ServiceNow", "Salesforce", "Jira", "SAP", "Workday"],
+    targetUsers: ["Business Analysts", "Citizen Developers", "IT Admins", "Customer Service", "HR", "Finance", "Procurement"],
     mcpSupport: true,
-    agentTypes: ["Conversational", "Autonomous", "Voice/IVR", "M365 Copilot Extensions"],
+    agentTypes: ["Conversational", "Autonomous (25 credits/trigger)", "Voice/IVR", "M365 Copilot Extensions", "Human-in-the-loop"],
     connectorCount: 1400,
-    compliance: ["SOC2", "GDPR", "FedRAMP", "HIPAA"],
-    releaseWave: "Wave 2 2025"
+    compliance: ["SOC2", "GDPR", "FedRAMP", "HIPAA", "ISO 27001"],
+    releaseWave: "Frontier Program 2025"
   },
   {
     id: "power-automate",
@@ -525,6 +532,112 @@ export const mcpIntegrations = {
     "Growing third-party ecosystem",
     "Faster agent development",
     "Cross-platform compatibility"
+  ]
+};
+
+export interface FrontierAgent {
+  name: string;
+  capability: string;
+  availability: string;
+  status: "Frontier" | "GA" | "Preview";
+  useCase: string;
+}
+
+export const frontierAgents: FrontierAgent[] = [
+  {
+    name: "Researcher Agent",
+    capability: "Multi-step research with OpenAI or Anthropic reasoning models",
+    availability: "Frontier (April 2025)",
+    status: "Frontier",
+    useCase: "Deep research, competitive analysis, market intelligence"
+  },
+  {
+    name: "Analyst Agent",
+    capability: "Data analysis—turn raw data into insights like a data scientist",
+    availability: "Frontier (April 2025)",
+    status: "Frontier",
+    useCase: "Financial modeling, trend analysis, reporting automation"
+  },
+  {
+    name: "App Builder Agent",
+    capability: "Build custom apps using natural language—track projects, assign tasks, build dashboards",
+    availability: "Frontier (Oct 2025)",
+    status: "Frontier",
+    useCase: "Rapid prototyping, internal tools, custom workflows"
+  },
+  {
+    name: "Workflows Agent",
+    capability: "Automate tasks on a schedule or in response to events",
+    availability: "Frontier (Oct 2025)",
+    status: "Frontier",
+    useCase: "Process automation, notifications, data synchronization"
+  },
+  {
+    name: "People Agent",
+    capability: "Centralize people-related information across the organization",
+    availability: "Frontier (Nov 2025)",
+    status: "Frontier",
+    useCase: "HR support, org insights, employee lookup"
+  },
+  {
+    name: "Sales Development Agent",
+    capability: "Autonomously build pipeline, nurture leads, personalize outreach",
+    availability: "Frontier (Dec 2025)",
+    status: "Frontier",
+    useCase: "Lead generation, follow-up automation, sales enablement"
+  },
+  {
+    name: "Workforce Insights Agent",
+    capability: "Real-time team/org insights by role, tenure, location",
+    availability: "Frontier (Nov 2025)",
+    status: "Frontier",
+    useCase: "Workforce planning, capacity analysis, team optimization"
+  }
+];
+
+export interface CreditConsumption {
+  actionType: string;
+  credits: number;
+  notes: string;
+}
+
+export const copilotCreditConsumption: CreditConsumption[] = [
+  { actionType: "Classic response (scripted)", credits: 1, notes: "Pre-built, non-AI responses" },
+  { actionType: "Generative response (AI answer)", credits: 2, notes: "GPT-powered answers" },
+  { actionType: "Agent action (invoke tools/plugins)", credits: 5, notes: "Each connector call, API action" },
+  { actionType: "Tenant Graph grounding", credits: 10, notes: "RAG over Microsoft 365 data (reduced from 30 in April 2025)" },
+  { actionType: "Agent flows", credits: 13, notes: "Per 100 Power Automate actions" },
+  { actionType: "Autonomous trigger", credits: 25, notes: "Always billed, even for M365 Copilot users" },
+  { actionType: "Deep reasoning (premium AI)", credits: 0, notes: "Variable - premium models cost more" }
+];
+
+export interface AgentModeApp {
+  app: string;
+  capability: string;
+  status: "GA" | "Frontier" | "Preview";
+  availableDate: string;
+}
+
+export const agentModeApps: AgentModeApp[] = [
+  { app: "Word", capability: "Iterative document creation with reasoning models", status: "GA", availableDate: "Nov 2025" },
+  { app: "Excel", capability: "Multi-step tasks (modeling, tables, charts); choose OpenAI or Anthropic models", status: "Frontier", availableDate: "Nov/Dec 2025" },
+  { app: "PowerPoint", capability: "Iterative presentation creation with AI assistance", status: "Frontier", availableDate: "Nov 2025" }
+];
+
+export const frontierModels = {
+  title: "Expanded Model Choice in Copilot Studio (Frontier)",
+  description: "Priority access to cutting-edge AI models for building agents",
+  models: [
+    { name: "GPT-5.1", provider: "OpenAI", status: "Frontier", bestFor: "General purpose agents" },
+    { name: "GPT-5.2", provider: "OpenAI", status: "Frontier (Dec 2025)", bestFor: "Advanced reasoning, complex tasks" },
+    { name: "Claude Sonnet 4", provider: "Anthropic", status: "Frontier", bestFor: "Coding, analysis, nuanced responses" },
+    { name: "Claude Opus 4.1", provider: "Anthropic", status: "Frontier", bestFor: "Complex reasoning, enterprise-critical tasks" }
+  ],
+  advantages: [
+    "Model selection dropdown in Copilot Studio",
+    "Choose the right AI model for each task",
+    "Priority access for Copilot-licensed users",
+    "Third-party models via Azure AI Foundry"
   ]
 };
 
