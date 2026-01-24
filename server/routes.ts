@@ -6,6 +6,10 @@ import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { fromError } from "zod-validation-error";
+import NodeCache from "node-cache";
+
+// Cache for 10 minutes (TTL = 600s)
+const apiCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -54,7 +58,12 @@ export async function registerRoutes(
   
   app.get("/api/platforms", async (_req: Request, res: Response) => {
     try {
+      const cacheKey = "platforms_all";
+      const cached = apiCache.get(cacheKey);
+      if (cached) return res.json(cached);
+
       const platforms = await storage.getAllPlatforms();
+      apiCache.set(cacheKey, platforms);
       res.json(platforms);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch platforms" });
@@ -63,10 +72,15 @@ export async function registerRoutes(
 
   app.get("/api/platforms/:id", async (req: Request, res: Response) => {
     try {
+      const cacheKey = `platform_${req.params.id}`;
+      const cached = apiCache.get(cacheKey);
+      if (cached) return res.json(cached);
+
       const platform = await storage.getPlatformById(req.params.id);
       if (!platform) {
         return res.status(404).json({ message: "Platform not found" });
       }
+      apiCache.set(cacheKey, platform);
       res.json(platform);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch platform" });
@@ -82,6 +96,10 @@ export async function registerRoutes(
       }
       
       const { ids } = parseResult.data;
+      const cacheKey = `compare_${ids.sort().join("_")}`;
+      const cached = apiCache.get(cacheKey);
+      if (cached) return res.json(cached);
+
       const platforms = await storage.getPlatformsByIds(ids);
       
       if (platforms.length === 0) {
@@ -97,6 +115,7 @@ export async function registerRoutes(
         });
       }
       
+      apiCache.set(cacheKey, platforms);
       res.json(platforms);
     } catch (error) {
       res.status(500).json({ message: "Failed to compare platforms" });
@@ -105,7 +124,12 @@ export async function registerRoutes(
 
   app.get("/api/strategy", async (_req: Request, res: Response) => {
     try {
+      const cacheKey = "strategy_tiers";
+      const cached = apiCache.get(cacheKey);
+      if (cached) return res.json(cached);
+
       const tiers = await storage.getStrategyTiers();
+      apiCache.set(cacheKey, tiers);
       res.json(tiers);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch strategy tiers" });

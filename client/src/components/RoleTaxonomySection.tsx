@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,18 @@ import {
   type TaxonomyTeam,
   type FeatureAccess
 } from "@/lib/roleTaxonomyData";
+
+// Simple debounce utility for optimization
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useState(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => clearTimeout(handler);
+  });
+  return debouncedValue;
+}
 
 const teamIcons: Record<string, typeof Users> = {
   executive: Building2,
@@ -467,6 +479,11 @@ export function RoleTaxonomySection() {
     Object.fromEntries(taxonomyTeams.map(t => [t.id, true]))
   );
 
+  // Throttled team toggle to prevent rapid layout shifts
+  const toggleTeam = useCallback((teamId: string) => {
+    setExpandedTeams(prev => ({ ...prev, [teamId]: !prev[teamId] }));
+  }, []);
+
   const filteredTeams = taxonomyTeams.filter(team => 
     selectedTeam === "all" || team.id === selectedTeam
   ).map(team => ({
@@ -479,10 +496,6 @@ export function RoleTaxonomySection() {
       role.memoryFocus.toLowerCase().includes(searchQuery.toLowerCase())
     )
   })).filter(team => team.roles.length > 0);
-
-  const toggleTeam = (teamId: string) => {
-    setExpandedTeams(prev => ({ ...prev, [teamId]: !prev[teamId] }));
-  };
 
   const selectedTeamData = selectedRole 
     ? taxonomyTeams.find(t => t.roles.some(r => r.id === selectedRole.id)) 
