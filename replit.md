@@ -6,7 +6,19 @@ INT Platform Explorer is an enterprise decision-support tool for C-suite and upp
 
 The application is built as a React single-page application with an Express backend, using a tabbed interface with eight main sections: Explorer (browse/filter platforms by ecosystem), Comparison (side-by-side evaluation), Matrix (capability grid with ecosystem grouping), ROI Calculator, Strategy (tiered recommendations with ecosystem coverage), Assessment (AI readiness wizard), Profile Builder (Claude configuration guide with Personas sub-tab), and Microsoft Deep Dive (comprehensive Microsoft ecosystem analysis).
 
-## Recent Changes (January 18, 2026)
+## Recent Changes (January 24, 2026)
+
+**INT Inc Claude Role Taxonomy v4.0:**
+- Created comprehensive role taxonomy with 41 FTE across 7 teams: Executive Leadership, Sales & BD, Client Success, Engineering, Marketing, Operations, Tech Services
+- Each role includes Claude Enterprise configuration: feature access (Web Search, Memory, Code Execution, Artifacts, Files, Research), memory focus, use cases, guardrails, and security clearance (1-5 stars)
+- Added "Taxonomy" sub-tab in Profile Builder with 3 inner tabs: Roles, Feature Matrix, Data Security
+- Roles tab: Team filtering, search functionality, expandable team sections, role cards with security badges
+- Feature Matrix tab: Team-level access visualization for all Claude features
+- Data Security tab: 4-level data classification (Public, Internal, Confidential, Restricted) with color-coded cards
+- Role detail modal shows department, level, reporting chain, memory focus, use cases, guardrails, and feature access status
+- $7.1M total revenue tracked across B2B industry focus
+
+## Previous Changes (January 18, 2026)
 
 **Client Personas Module:**
 - Added B2B SaaS client personas (CMO, Ops Lead, Founder, Product Manager, Ecommerce Manager, VP Sales, CTO, Customer Success Lead)
