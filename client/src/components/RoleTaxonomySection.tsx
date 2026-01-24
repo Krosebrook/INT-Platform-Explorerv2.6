@@ -14,8 +14,6 @@ import {
   taxonomyTeams,
   featureAccessMatrix,
   dataClassification,
-  dataTriageMatrix,
-  teamPlatformRecommendations,
   taxonomyMetadata,
   type TaxonomyRole,
   type TaxonomyTeam,
@@ -297,126 +295,43 @@ function FeatureMatrixTable() {
 }
 
 function DataClassificationSection() {
-  const getSecurityColor = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "restricted": return "border-red-500/50 bg-red-50/50 dark:bg-red-950/20";
-      case "confidential": return "border-orange-500/50 bg-orange-50/50 dark:bg-orange-950/20";
-      case "standard": return "border-yellow-500/50 bg-yellow-50/50 dark:bg-yellow-950/20";
-      case "internal": return "border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/20";
-      case "public": return "border-green-500/50 bg-green-50/50 dark:bg-green-950/20";
-      default: return "border-gray-500/50 bg-gray-50/50 dark:bg-gray-950/20";
-    }
-  };
-
-  const getSecurityBadgeVariant = (level: string) => {
-    switch (level.toLowerCase()) {
-      case "restricted": return "destructive" as const;
-      case "confidential": return "secondary" as const;
-      default: return "outline" as const;
-    }
-  };
-
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-amber-500" />
-            Data Classification & Memory Guardrails
-          </CardTitle>
-          <CardDescription>Data sensitivity levels and access controls</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {dataClassification.map((level, i) => (
-              <div 
-                key={i} 
-                className={`p-4 rounded-lg border ${getSecurityColor(level.level)}`}
-                data-testid={`data-classification-${level.level.toLowerCase()}`}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant={getSecurityBadgeVariant(level.level)}>
-                    {level.level}
-                  </Badge>
-                </div>
-                <p className="text-sm mb-1">{level.description}</p>
-                <p className="text-xs text-muted-foreground">Available to: {level.availableTo}</p>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Shield className="h-5 w-5 text-amber-500" />
+          Data Classification & Memory Guardrails
+        </CardTitle>
+        <CardDescription>Data sensitivity levels and access controls</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {dataClassification.map((level, i) => (
+            <div 
+              key={i} 
+              className={`p-4 rounded-lg border ${
+                level.level === "Restricted" ? "border-red-500/50 bg-red-50/50 dark:bg-red-950/20" :
+                level.level === "Confidential" ? "border-amber-500/50 bg-amber-50/50 dark:bg-amber-950/20" :
+                level.level === "Internal" ? "border-blue-500/50 bg-blue-50/50 dark:bg-blue-950/20" :
+                "border-green-500/50 bg-green-50/50 dark:bg-green-950/20"
+              }`}
+              data-testid={`data-classification-${level.level.toLowerCase()}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Badge variant={
+                  level.level === "Restricted" ? "destructive" :
+                  level.level === "Confidential" ? "secondary" : "outline"
+                }>
+                  {level.level}
+                </Badge>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card data-testid="card-data-triage-matrix">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Globe className="h-5 w-5 text-blue-500" />
-            Data Triage Matrix
-          </CardTitle>
-          <CardDescription>
-            Platform-to-data-type mapping: SECURE DATA stays in Microsoft. SPEED goes to the specialists.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {dataTriageMatrix.map((entry, i) => (
-              <div 
-                key={i} 
-                className={`p-4 rounded-lg border ${getSecurityColor(entry.securityLevel)}`}
-                data-testid={`data-triage-${entry.dataType.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant={getSecurityBadgeVariant(entry.securityLevel)}>
-                      {entry.securityLevel}
-                    </Badge>
-                    <span className="font-medium">{entry.dataType}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {entry.platforms.map((platform, j) => (
-                      <Badge key={j} variant="outline" className="text-xs">{platform}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {entry.examples.map((example, j) => (
-                    <Badge key={j} variant="secondary" className="text-xs">{example}</Badge>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card data-testid="card-team-platform-recommendations">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-purple-500" />
-            Team Platform Recommendations
-          </CardTitle>
-          <CardDescription>
-            Recommended AI platforms by department based on role-specific needs
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {Object.entries(teamPlatformRecommendations).map(([team, rec]) => (
-              <div key={team} className="p-3 rounded-lg border bg-muted/30" data-testid={`team-rec-${team.toLowerCase().replace(/\s+/g, '-')}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium">{team}</span>
-                  <div className="flex gap-1">
-                    <Badge className="bg-primary/90">{rec.primary}</Badge>
-                    {rec.secondary && <Badge variant="outline">{rec.secondary}</Badge>}
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground">{rec.rationale}</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              <p className="text-sm mb-1">{level.description}</p>
+              <p className="text-xs text-muted-foreground">Available to: {level.availableTo}</p>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

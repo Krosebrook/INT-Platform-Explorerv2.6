@@ -16,7 +16,6 @@ import {
 import { PersonaProfileBuilder } from "@/components/PersonaProfileBuilder";
 import { ClientPersonasSection } from "@/components/ClientPersonasSection";
 import { RoleTaxonomySection } from "@/components/RoleTaxonomySection";
-import { AIStrategySection } from "@/components/AIStrategySection";
 
 function RoleSelector({ selectedRole, onSelectRole }: { selectedRole: Role; onSelectRole: (role: Role) => void }) {
   return (
@@ -560,7 +559,7 @@ export function ProfileBuilderTab() {
       </div>
 
       <Tabs value={activeSection} onValueChange={setActiveSection}>
-        <TabsList className="grid grid-cols-3 md:grid-cols-9 w-full max-w-6xl">
+        <TabsList className="grid grid-cols-4 md:grid-cols-8 w-full max-w-5xl">
           <TabsTrigger value="overview" data-testid="tab-profile-overview">Overview</TabsTrigger>
           <TabsTrigger value="personas" data-testid="tab-profile-personas" className="flex items-center gap-1">
             <UserCircle className="w-3 h-3" />
@@ -573,10 +572,6 @@ export function ProfileBuilderTab() {
           <TabsTrigger value="taxonomy" data-testid="tab-profile-taxonomy" className="flex items-center gap-1">
             <Shield className="w-3 h-3" />
             <span>Taxonomy</span>
-          </TabsTrigger>
-          <TabsTrigger value="strategy" data-testid="tab-profile-strategy" className="flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" />
-            <span>AI Strategy</span>
           </TabsTrigger>
           <TabsTrigger value="models" data-testid="tab-profile-models">Models</TabsTrigger>
           <TabsTrigger value="roles" data-testid="tab-profile-roles">Roles</TabsTrigger>
@@ -598,10 +593,6 @@ export function ProfileBuilderTab() {
 
         <TabsContent value="taxonomy" className="mt-6">
           <RoleTaxonomySection />
-        </TabsContent>
-
-        <TabsContent value="strategy" className="mt-6">
-          <AIStrategySection />
         </TabsContent>
 
         <TabsContent value="models" className="mt-6">
