@@ -1,7 +1,25 @@
-import { type User, type UpsertUser, type Platform, type StrategyTier, type ROIInputs, type ROIResults } from "@shared/schema";
+import { type User, type UpsertUser, type Platform, type StrategyTier, type ROIInputs, type ROIResults, type PlatformCapabilities } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 const WEEKS_PER_YEAR = 48;
+
+// Helper to fill in default capability values for extended schema
+const defaultCapabilities: Partial<PlatformCapabilities> = {
+  vision: 7,
+  audio: 5,
+  functionCalling: 8,
+  jsonReliability: 8,
+  dataPrivacy: 8,
+  onPremOption: 3,
+  slaAvailability: 8,
+  contextRecall: 8,
+  timeToFirstToken: 7,
+  tokensPerSecond: 7,
+};
+
+function withDefaults(caps: Partial<PlatformCapabilities>): PlatformCapabilities {
+  return { ...defaultCapabilities, ...caps } as PlatformCapabilities;
+}
 
 const platformsData: Platform[] = [
   {
@@ -15,7 +33,7 @@ const platformsData: Platform[] = [
     contextWindow: "200K tokens",
     compliance: ["SOC2", "HIPAA", "GDPR"],
     targetUsers: "Developers, Analysts, Researchers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 10,
       reasoning: 10,
       languageUnderstanding: 9,
@@ -26,7 +44,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 9,
       developerExperience: 9,
       documentation: 9,
-    },
+    }),
     logoColor: "#D97706",
   },
   {
@@ -40,7 +58,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "HIPAA", "GDPR"],
     targetUsers: "Enterprise Teams, Knowledge Workers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 9,
       reasoning: 9,
       languageUnderstanding: 9,
@@ -51,7 +69,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 10,
       developerExperience: 8,
       documentation: 9,
-    },
+    }),
     logoColor: "#10A37F",
   },
   {
@@ -65,7 +83,7 @@ const platformsData: Platform[] = [
     contextWindow: "1M tokens",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Researchers, Google Workspace Users",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 8,
       reasoning: 9,
       languageUnderstanding: 9,
@@ -76,7 +94,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 8,
       developerExperience: 7,
       documentation: 8,
-    },
+    }),
     logoColor: "#4285F4",
   },
   {
@@ -90,7 +108,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "GDPR", "FedRAMP"],
     targetUsers: "Microsoft 365 Users, Enterprise",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 8,
       reasoning: 8,
       languageUnderstanding: 8,
@@ -101,7 +119,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 10,
       developerExperience: 7,
       documentation: 8,
-    },
+    }),
     logoColor: "#00A4EF",
   },
   {
@@ -115,7 +133,7 @@ const platformsData: Platform[] = [
     contextWindow: "N/A",
     compliance: ["SOC2"],
     targetUsers: "Software Developers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 10,
       reasoning: 7,
       languageUnderstanding: 7,
@@ -126,7 +144,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 7,
       developerExperience: 10,
       documentation: 8,
-    },
+    }),
     logoColor: "#24292E",
   },
   {
@@ -140,7 +158,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Researchers, Analysts",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 6,
       reasoning: 8,
       languageUnderstanding: 8,
@@ -151,7 +169,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 6,
       developerExperience: 7,
       documentation: 7,
-    },
+    }),
     logoColor: "#20808D",
   },
   {
@@ -165,7 +183,7 @@ const platformsData: Platform[] = [
     contextWindow: "200K tokens",
     compliance: ["SOC2", "HIPAA", "GDPR"],
     targetUsers: "Developers, API Integrators",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 10,
       reasoning: 10,
       languageUnderstanding: 9,
@@ -176,7 +194,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 7,
       developerExperience: 9,
       documentation: 9,
-    },
+    }),
     logoColor: "#D97706",
   },
   {
@@ -190,7 +208,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "HIPAA", "GDPR"],
     targetUsers: "Developers, Enterprises",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 9,
       reasoning: 9,
       languageUnderstanding: 9,
@@ -201,7 +219,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 8,
       developerExperience: 9,
       documentation: 10,
-    },
+    }),
     logoColor: "#10A37F",
   },
   {
@@ -215,7 +233,7 @@ const platformsData: Platform[] = [
     contextWindow: "Variable",
     compliance: ["SOC2", "HIPAA", "FedRAMP"],
     targetUsers: "AWS Customers, Enterprise",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 8,
       reasoning: 8,
       languageUnderstanding: 8,
@@ -226,7 +244,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 10,
       developerExperience: 7,
       documentation: 8,
-    },
+    }),
     logoColor: "#FF9900",
   },
   {
@@ -240,7 +258,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "HIPAA", "FedRAMP", "GDPR"],
     targetUsers: "Azure Customers, Government",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 9,
       reasoning: 9,
       languageUnderstanding: 9,
@@ -251,7 +269,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 10,
       developerExperience: 8,
       documentation: 9,
-    },
+    }),
     logoColor: "#0078D4",
   },
   {
@@ -265,7 +283,7 @@ const platformsData: Platform[] = [
     contextWindow: "128K tokens",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "NLP Developers, Search Teams",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 6,
       reasoning: 7,
       languageUnderstanding: 9,
@@ -276,7 +294,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 7,
       developerExperience: 8,
       documentation: 7,
-    },
+    }),
     logoColor: "#39594D",
   },
   {
@@ -290,7 +308,7 @@ const platformsData: Platform[] = [
     contextWindow: "Variable",
     compliance: ["GDPR"],
     targetUsers: "ML Engineers, Researchers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 7,
       reasoning: 7,
       languageUnderstanding: 8,
@@ -301,7 +319,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 5,
       developerExperience: 8,
       documentation: 9,
-    },
+    }),
     logoColor: "#FFD21E",
   },
   {
@@ -315,7 +333,7 @@ const platformsData: Platform[] = [
     contextWindow: "N/A",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Marketing Teams, Content Creators",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 2,
       reasoning: 6,
       languageUnderstanding: 8,
@@ -326,7 +344,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 7,
       developerExperience: 5,
       documentation: 7,
-    },
+    }),
     logoColor: "#FF5A5F",
   },
   {
@@ -340,7 +358,7 @@ const platformsData: Platform[] = [
     contextWindow: "N/A",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Sales Teams, Marketers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 1,
       reasoning: 5,
       languageUnderstanding: 7,
@@ -351,7 +369,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 6,
       developerExperience: 5,
       documentation: 6,
-    },
+    }),
     logoColor: "#7C3AED",
   },
   {
@@ -365,7 +383,7 @@ const platformsData: Platform[] = [
     contextWindow: "N/A",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Notion Users, Knowledge Workers",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 4,
       reasoning: 6,
       languageUnderstanding: 7,
@@ -376,7 +394,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 6,
       developerExperience: 5,
       documentation: 7,
-    },
+    }),
     logoColor: "#000000",
   },
   {
@@ -390,7 +408,7 @@ const platformsData: Platform[] = [
     contextWindow: "N/A",
     compliance: ["SOC2", "GDPR"],
     targetUsers: "Slack Users, Team Collaboration",
-    capabilities: {
+    capabilities: withDefaults({
       codeGeneration: 2,
       reasoning: 5,
       languageUnderstanding: 7,
@@ -401,7 +419,7 @@ const platformsData: Platform[] = [
       enterpriseFeatures: 7,
       developerExperience: 4,
       documentation: 6,
-    },
+    }),
     logoColor: "#4A154B",
   },
 ];
@@ -457,8 +475,13 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: UpsertUser): Promise<User> {
     const now = new Date();
+    const userId = insertUser.id || randomUUID();
     const user: User = { 
-      ...insertUser, 
+      id: userId,
+      email: insertUser.email ?? null,
+      firstName: insertUser.firstName ?? null,
+      lastName: insertUser.lastName ?? null,
+      profileImageUrl: insertUser.profileImageUrl ?? null,
       createdAt: now,
       updatedAt: now,
     };
