@@ -992,6 +992,88 @@ export const dataClassification = [
   }
 ];
 
+// Data Triage Matrix - Platform-to-Data-Type Mapping (from AI Strategy)
+export const dataTriageMatrix = [
+  {
+    dataType: "Client PII",
+    platforms: ["Microsoft ONLY"],
+    securityLevel: "Restricted",
+    examples: ["SSN", "Financial records", "Health data", "Personal identifiers"],
+    color: "red"
+  },
+  {
+    dataType: "Internal Documents",
+    platforms: ["Microsoft", "Claude"],
+    securityLevel: "Confidential",
+    examples: ["SOPs", "Runbooks", "Policies", "Internal procedures"],
+    color: "orange"
+  },
+  {
+    dataType: "Code / Technical",
+    platforms: ["Claude", "ChatGPT", "GitHub Copilot"],
+    securityLevel: "Standard",
+    examples: ["PowerShell scripts", "Python code", "Configurations", "Technical specs"],
+    color: "yellow"
+  },
+  {
+    dataType: "Market Research",
+    platforms: ["Perplexity", "Gemini"],
+    securityLevel: "Public",
+    examples: ["Vendor intel", "Industry trends", "Competitor analysis", "Market data"],
+    color: "green"
+  },
+  {
+    dataType: "Creative Content",
+    platforms: ["ChatGPT", "Gemini"],
+    securityLevel: "Public",
+    examples: ["Blog drafts", "Social media posts", "Email templates", "Marketing copy"],
+    color: "blue"
+  }
+];
+
+// Recommended AI Platforms by Team (from AI Strategy)
+export const teamPlatformRecommendations: Record<string, {
+  primary: string;
+  secondary?: string;
+  rationale: string;
+}> = {
+  "Executive": {
+    primary: "Microsoft Copilot",
+    secondary: "Claude",
+    rationale: "M365 integration for executive communications, Claude for strategic analysis"
+  },
+  "Sales & BD": {
+    primary: "Microsoft Copilot",
+    secondary: "ChatGPT",
+    rationale: "Native CRM integration, proposal generation, meeting summaries"
+  },
+  "Client Success": {
+    primary: "Gemini",
+    secondary: "Claude",
+    rationale: "Ticket triage, sentiment analysis, knowledge base management"
+  },
+  "Engineering": {
+    primary: "Claude",
+    secondary: "GitHub Copilot",
+    rationale: "Code review, technical documentation, complex reasoning"
+  },
+  "Marketing": {
+    primary: "ChatGPT",
+    secondary: "Gemini",
+    rationale: "Creative content generation, multi-platform strategies"
+  },
+  "Operations": {
+    primary: "Claude",
+    secondary: "Copilot",
+    rationale: "SOP documentation, process mapping, workflow optimization"
+  },
+  "Tech Services": {
+    primary: "Claude",
+    secondary: "Copilot",
+    rationale: "Technical implementation, client solutions, compliance docs"
+  }
+};
+
 export const deploymentPhases = {
   preDeployment: {
     week: "Week 1",
