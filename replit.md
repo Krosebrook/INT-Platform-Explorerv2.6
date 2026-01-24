@@ -8,13 +8,28 @@ The application is built as a React single-page application with an Express back
 
 ## Recent Changes (January 24, 2026)
 
+**Hybrid Intelligence AI Strategy:**
+- Created new AI Strategy section in Profile Builder with 4 sub-tabs: Overview, Data Triage, Dept ROI, Pilot Program
+- Core principle: "SECURE DATA stays in Microsoft. SPEED goes to the specialists."
+- Four-platform model: Microsoft Copilot (secure enterprise), Claude Enterprise (technical depth), Perplexity Pro (research speed), ChatGPT/Gemini (creative content)
+- Data Triage Matrix: 5 data classification levels mapped to approved platforms (Client PII - Microsoft ONLY, Internal Docs - Microsoft+Claude, Code - Claude+ChatGPT+GitHub, Market Research - Perplexity+Gemini, Creative - ChatGPT+Gemini)
+- Department ROI analysis for 7 departments with time savings, cost impact, and projected ROI ranges
+- 30-Day Pilot Program: $500-$620 budget, 5 participants across departments, weekly structure with success metrics
+- Objection Battle Card with strategic responses to common concerns
+- Platform security certifications table (SOC 2, HIPAA, GDPR compliance)
+
+**Enhanced Data Security in Role Taxonomy:**
+- Integrated Data Triage Matrix into Data Security section showing platform-to-data-type mappings
+- Added Team Platform Recommendations with primary/secondary AI platform guidance for each of 7 departments
+- Executive: Copilot + Claude, Sales: Copilot + ChatGPT, Engineering: Claude + GitHub Copilot, Marketing: ChatGPT + Gemini, Operations: Claude + Copilot, Tech Services: Claude + Copilot, Client Success: Gemini + Claude
+
 **INT Inc Claude Role Taxonomy v4.0:**
 - Created comprehensive role taxonomy with 41 FTE across 7 teams: Executive Leadership, Sales & BD, Client Success, Engineering, Marketing, Operations, Tech Services
 - Each role includes Claude Enterprise configuration: feature access (Web Search, Memory, Code Execution, Artifacts, Files, Research), memory focus, use cases, guardrails, and security clearance (1-5 stars)
 - Added "Taxonomy" sub-tab in Profile Builder with 3 inner tabs: Roles, Feature Matrix, Data Security
 - Roles tab: Team filtering, search functionality, expandable team sections, role cards with security badges
 - Feature Matrix tab: Team-level access visualization for all Claude features
-- Data Security tab: 4-level data classification (Public, Internal, Confidential, Restricted) with color-coded cards
+- Data Security tab: 4-level data classification (Public, Internal, Confidential, Restricted) with color-coded cards, Data Triage Matrix, Team Platform Recommendations
 - Role detail modal shows department, level, reporting chain, memory focus, use cases, guardrails, and feature access status
 - $7.1M total revenue tracked across B2B industry focus
 
