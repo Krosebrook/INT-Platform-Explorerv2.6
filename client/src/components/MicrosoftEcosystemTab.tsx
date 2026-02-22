@@ -380,7 +380,9 @@ function FrontierFirmSection() {
               <div key={i} className="p-4 rounded-lg border bg-background" data-testid={`model-${i}`}>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="font-semibold">{model.name}</span>
-                  <Badge variant="outline" className="text-xs border-purple-500 text-purple-600 dark:text-purple-400">Frontier</Badge>
+                  <Badge variant="outline" className="text-xs border-purple-500 text-purple-600 dark:text-purple-400">
+                    {model.availableDate ? `${model.status} (${model.availableDate})` : model.status}
+                  </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">{model.provider}</p>
                 <p className="text-sm">{model.bestFor}</p>

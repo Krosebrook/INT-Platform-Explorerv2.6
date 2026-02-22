@@ -30,6 +30,14 @@ export interface MicrosoftLicenseOption {
   addOns?: { name: string; price: string }[];
 }
 
+export interface FrontierModel {
+  name: string;
+  provider: string;
+  status: "Frontier" | "GA" | "Preview";
+  availableDate?: string;
+  bestFor: string;
+}
+
 export interface ProductRelationship {
   source: string;
   target: string;
@@ -629,10 +637,10 @@ export const frontierModels = {
   description: "Priority access to cutting-edge AI models for building agents",
   models: [
     { name: "GPT-5.1", provider: "OpenAI", status: "Frontier", bestFor: "General purpose agents" },
-    { name: "GPT-5.2", provider: "OpenAI", status: "Frontier (Dec 2025)", bestFor: "Advanced reasoning, complex tasks" },
+    { name: "GPT-5.2", provider: "OpenAI", status: "Frontier", availableDate: "Dec 2025", bestFor: "Advanced reasoning, complex tasks" },
     { name: "Claude Sonnet 4", provider: "Anthropic", status: "Frontier", bestFor: "Coding, analysis, nuanced responses" },
     { name: "Claude Opus 4.1", provider: "Anthropic", status: "Frontier", bestFor: "Complex reasoning, enterprise-critical tasks" }
-  ],
+  ] as FrontierModel[],
   advantages: [
     "Model selection dropdown in Copilot Studio",
     "Choose the right AI model for each task",
