@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 import { platforms, strategyTiers } from "@/entities/platform/data";
 import { ecosystems, ecosystemLabels, getEcosystemById } from "@/entities/platform/ecosystemData";
 import type { EcosystemType } from "@shared/schema";
-import { Target, Award, Rocket, Star, BookOpen, ArrowRight, CheckCircle2, Layers } from "lucide-react";
+import { Target, Award, Rocket, Star, BookOpen, ArrowRight, CheckCircle2, Layers, Printer, TrendingUp, Users, ShieldAlert, Clock } from "lucide-react";
 
 const tierIcons = {
   1: Award,
@@ -149,10 +150,75 @@ export function StrategyTab() {
             Tiered platform adoption strategy based on INT Inc. consulting methodology
           </p>
         </div>
-        <Badge variant="outline" className="flex items-center gap-1.5">
-          <BookOpen className="w-3.5 h-3.5" />
-          3-Phase Methodology
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5" />
+            3-Phase Methodology
+          </Badge>
+          <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-2 print:hidden">
+            <Printer className="w-4 h-4" />
+            Print / Export PDF
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">AI Strategy Pillars</p>
+                <p className="text-2xl font-bold font-mono">5</p>
+                <p className="text-xs text-muted-foreground mt-1">Core strategic dimensions</p>
+              </div>
+              <div className="p-2 rounded-lg bg-muted/50">
+                <TrendingUp className="w-5 h-5 text-primary" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Implementation Steps</p>
+                <p className="text-2xl font-bold font-mono">12</p>
+                <p className="text-xs text-muted-foreground mt-1">Across all phases</p>
+              </div>
+              <div className="p-2 rounded-lg bg-muted/50">
+                <Users className="w-5 h-5 text-chart-2" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Risk Factors</p>
+                <p className="text-2xl font-bold font-mono">8</p>
+                <p className="text-xs text-muted-foreground mt-1">Identified & mitigated</p>
+              </div>
+              <div className="p-2 rounded-lg bg-muted/50">
+                <ShieldAlert className="w-5 h-5 text-amber-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Timeline Phases</p>
+                <p className="text-2xl font-bold font-mono">3</p>
+                <p className="text-xs text-muted-foreground mt-1">12-32 weeks total</p>
+              </div>
+              <div className="p-2 rounded-lg bg-muted/50">
+                <Clock className="w-5 h-5 text-chart-3" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Card className="bg-gradient-to-r from-primary/5 via-chart-2/5 to-chart-3/5">

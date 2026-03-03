@@ -11,7 +11,17 @@ const NAV_ITEMS = [
   { label: 'Strategy', path: '/strategy', group: 'Evaluate' },
   { label: 'RFP Generator', path: '/rfp', group: 'Evaluate' },
   { label: 'Profile Builder', path: '/profile-builder', group: 'Build' },
+  { label: 'Agent Builder', path: '/agent-builder', group: 'Build' },
+  { label: 'System Baseline', path: '/baseline', group: 'Build' },
+  { label: 'Dashboard', path: '/dashboard', group: 'Operate' },
+  { label: 'Analytics', path: '/analytics', group: 'Operate' },
+  { label: 'Deployment', path: '/deployment', group: 'Operate' },
+  { label: 'Governance', path: '/governance', group: 'Operate' },
+  { label: 'Collaboration', path: '/collaboration', group: 'Operate' },
   { label: 'Microsoft', path: '/ecosystem', group: 'Ecosystem' },
+  { label: 'App Marketplace', path: '/marketplace', group: 'Ecosystem' },
+  { label: 'MCP Tools', path: '/mcp-tools', group: 'Ecosystem' },
+  { label: 'Settings', path: '/settings', group: 'Settings' },
 ] as const;
 
 test.describe('Sidebar Navigation', () => {
@@ -24,7 +34,7 @@ test.describe('Sidebar Navigation', () => {
     const sidebar = page.locator('[data-slot="sidebar"]');
     await expect(sidebar).toBeAttached();
     await expect(page.locator('[data-testid="text-app-title"]')).toHaveText('INT Platform Explorer');
-    for (const groupLabel of ['Discover', 'Evaluate', 'Build', 'Ecosystem']) {
+    for (const groupLabel of ['Discover', 'Evaluate', 'Build', 'Operate', 'Ecosystem', 'Settings']) {
       await expect(page.locator('[data-sidebar="group-label"]', { hasText: groupLabel })).toBeAttached();
     }
   });

@@ -8,6 +8,7 @@ import type { ROIInputs, ROIResults } from "@shared/schema";
 import { Calculator, DollarSign, TrendingUp, Clock, Users, Percent, BookOpen, Info, Zap } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { Button } from "@/shared/ui/button";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface ScenarioPreset {
   label: string;
@@ -381,6 +382,68 @@ export function ROICalculator() {
           variant="primary"
         />
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <TrendingUp className="w-4 h-4" />
+            3-Year Projection
+          </CardTitle>
+          <CardDescription>
+            Estimated cost vs. productivity value with compounding efficiency gains
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={[
+                  {
+                    name: "Year 1",
+                    Benefit: results.annualProductivityValue,
+                    Cost: results.annualTotalCost,
+                  },
+                  {
+                    name: "Year 2",
+                    Benefit: Math.round(results.annualProductivityValue * 1.15),
+                    Cost: results.annualTotalCost,
+                  },
+                  {
+                    name: "Year 3",
+                    Benefit: Math.round(results.annualProductivityValue * 1.25),
+                    Cost: results.annualTotalCost,
+                  },
+                ]}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-muted" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} className="text-xs" />
+                <YAxis
+                  tickFormatter={(val: number) => `$${(val / 1000).toFixed(0)}k`}
+                  axisLine={false}
+                  tickLine={false}
+                  className="text-xs"
+                />
+                <RechartsTooltip
+                  formatter={(value: number) => formatCurrency(value)}
+                  contentStyle={{
+                    borderRadius: "8px",
+                    border: "1px solid hsl(var(--border))",
+                    backgroundColor: "hsl(var(--card))",
+                    color: "hsl(var(--card-foreground))",
+                  }}
+                />
+                <Legend />
+                <Bar dataKey="Benefit" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Cost" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4 italic">
+            * Year 2 assumes 15% productivity improvement from maturity. Year 3 assumes 25% improvement. Annual cost held constant.
+          </p>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardContent className="py-4">

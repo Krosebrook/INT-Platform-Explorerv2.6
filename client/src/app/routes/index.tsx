@@ -11,6 +11,16 @@ import { MicrosoftEcosystemTab } from "@/pages/ecosystem/ui";
 import { IntelligenceTab } from "@/pages/intelligence/ui";
 import { StacksTab } from "@/pages/stacks/ui";
 import { RFPTab } from "@/pages/rfp/ui";
+import { DashboardTab } from "@/pages/dashboard/ui";
+import { AgentBuilderTab } from "@/pages/agent-builder/ui";
+import { BaselineTab } from "@/pages/baseline/ui";
+import { AnalyticsTab } from "@/pages/analytics/ui";
+import { DeploymentTab } from "@/pages/deployment/ui";
+import { GovernanceTab } from "@/pages/governance/ui";
+import { CollaborationTab } from "@/pages/collaboration/ui";
+import { MarketplaceTab } from "@/pages/marketplace/ui";
+import { MCPToolsTab } from "@/pages/mcp-tools/ui";
+import { SettingsTab } from "@/pages/settings/ui";
 import NotFound from "@/pages/not-found";
 import type { Stack } from "@/entities/stack";
 
@@ -65,6 +75,16 @@ export function AppRoutes({
       <Route path="/rfp">
         <RFPTab selectedPlatforms={selectedPlatforms} />
       </Route>
+      <Route path="/dashboard" component={DashboardTab} />
+      <Route path="/agent-builder" component={AgentBuilderTab} />
+      <Route path="/baseline" component={BaselineTab} />
+      <Route path="/analytics" component={AnalyticsTab} />
+      <Route path="/deployment" component={DeploymentTab} />
+      <Route path="/governance" component={GovernanceTab} />
+      <Route path="/collaboration" component={CollaborationTab} />
+      <Route path="/marketplace" component={MarketplaceTab} />
+      <Route path="/mcp-tools" component={MCPToolsTab} />
+      <Route path="/settings" component={SettingsTab} />
       <Route component={NotFound} />
     </Switch>
   );

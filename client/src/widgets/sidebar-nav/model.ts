@@ -13,6 +13,16 @@ import {
   Brain,
   Layers,
   FileText,
+  Bot,
+  Shield,
+  LayoutDashboard,
+  BarChart3,
+  Rocket,
+  Scale,
+  Users,
+  Store,
+  Wrench,
+  Settings,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -54,6 +64,19 @@ export const NAV_GROUPS: NavGroup[] = [
     icon: Hammer,
     items: [
       { label: 'Profile Builder', icon: Hammer, path: '/profile-builder' },
+      { label: 'Agent Builder', icon: Bot, path: '/agent-builder' },
+      { label: 'System Baseline', icon: Shield, path: '/baseline' },
+    ],
+  },
+  {
+    label: 'Operate',
+    icon: LayoutDashboard,
+    items: [
+      { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+      { label: 'Analytics', icon: BarChart3, path: '/analytics' },
+      { label: 'Deployment', icon: Rocket, path: '/deployment' },
+      { label: 'Governance', icon: Scale, path: '/governance' },
+      { label: 'Collaboration', icon: Users, path: '/collaboration' },
     ],
   },
   {
@@ -61,6 +84,15 @@ export const NAV_GROUPS: NavGroup[] = [
     icon: Globe,
     items: [
       { label: 'Microsoft', icon: Building2, path: '/ecosystem' },
+      { label: 'App Marketplace', icon: Store, path: '/marketplace' },
+      { label: 'MCP Tools', icon: Wrench, path: '/mcp-tools' },
+    ],
+  },
+  {
+    label: 'Settings',
+    icon: Settings,
+    items: [
+      { label: 'Settings', icon: Settings, path: '/settings' },
     ],
   },
 ];

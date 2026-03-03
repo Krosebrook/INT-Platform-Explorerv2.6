@@ -1,0 +1,1 @@
+export { GovernanceTab } from "./ui";

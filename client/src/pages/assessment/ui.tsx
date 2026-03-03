@@ -6,9 +6,10 @@ import { Label } from "@/shared/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
 import { Badge } from "@/shared/ui/badge";
 import { Progress } from "@/shared/ui/progress";
-import { 
-  Building2, Calendar, Users, Plus, Trash2, ArrowLeft, ArrowRight, 
-  CheckCircle, Shield, Puzzle, AlertTriangle, TrendingUp, Trophy
+import {
+  Building2, Calendar, Users, Plus, Trash2, ArrowLeft, ArrowRight,
+  CheckCircle, Shield, Puzzle, AlertTriangle, TrendingUp, Trophy,
+  Sparkles, Cpu, Compass, ChevronRight
 } from "lucide-react";
 import { 
   DEPARTMENTS, COMPLIANCE_STANDARDS, INTEGRATION_CATEGORIES, PAIN_POINTS,
@@ -321,9 +322,69 @@ function Step5({ formData, setFormData }: { formData: AssessmentFormData; setFor
   );
 }
 
+function getTierAssignment(results: PlatformROI[]) {
+  const avgROI = results.length > 0
+    ? results.reduce((sum, r) => sum + r.one_year_roi, 0) / results.length
+    : 0;
+  // Score is normalized: ROI of 200%+ maps to ~80+, 100%+ maps to ~50+
+  const score = Math.min(100, Math.round(avgROI / 2.5));
+
+  if (score >= 80) {
+    return {
+      tier: "AI Native" as const,
+      score,
+      icon: Sparkles,
+      color: "bg-emerald-500/10 border-emerald-500/30",
+      badgeColor: "bg-emerald-500 text-white",
+      iconColor: "text-emerald-500",
+      description: "Your organization demonstrates strong AI readiness with excellent ROI potential. You are positioned for complex autonomous agents and advanced AI workflows.",
+      nextSteps: [
+        "Deploy autonomous AI agents for high-value workflows",
+        "Implement cross-department AI orchestration",
+        "Establish an AI Center of Excellence",
+        "Pursue advanced RAG and multi-modal AI strategies",
+      ],
+    };
+  }
+  if (score >= 50) {
+    return {
+      tier: "AI Adopter" as const,
+      score,
+      icon: Cpu,
+      color: "bg-blue-500/10 border-blue-500/30",
+      badgeColor: "bg-blue-500 text-white",
+      iconColor: "text-blue-500",
+      description: "Your organization shows solid potential for AI adoption. Copilot-style assistants and targeted automation will deliver strong returns.",
+      nextSteps: [
+        "Start with copilot-assisted workflows in key departments",
+        "Build internal AI champions and training programs",
+        "Standardize data pipelines for AI consumption",
+        "Pilot RAG-based knowledge management",
+      ],
+    };
+  }
+  return {
+    tier: "AI Explorer" as const,
+    score,
+    icon: Compass,
+    color: "bg-amber-500/10 border-amber-500/30",
+    badgeColor: "bg-amber-500 text-white",
+    iconColor: "text-amber-500",
+    description: "Your organization is in the early stages of AI readiness. Focus on foundational data governance and targeted pilot programs to build momentum.",
+    nextSteps: [
+      "Establish data governance and quality standards",
+      "Identify 2-3 high-impact pilot use cases",
+      "Invest in AI literacy training across the organization",
+      "Evaluate cloud infrastructure readiness for AI workloads",
+    ],
+  };
+}
+
 function Results({ formData, results, onReset }: { formData: AssessmentFormData; results: PlatformROI[]; onReset: () => void }) {
   const sortedResults = [...results].sort((a, b) => b.one_year_roi - a.one_year_roi);
   const winner = sortedResults[0];
+  const tierAssignment = getTierAssignment(sortedResults);
+  const TierIcon = tierAssignment.icon;
 
   return (
     <div className="space-y-6">
@@ -343,13 +404,13 @@ function Results({ formData, results, onReset }: { formData: AssessmentFormData;
         {sortedResults.map((result, index) => {
           const platform = AI_PLATFORMS.find(p => p.id === result.platform);
           const isWinner = index === 0;
-          
+
           return (
             <Card key={result.platform} className={isWinner ? 'ring-2 ring-primary' : ''} data-testid={`card-result-${result.platform}`}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
                       style={{ backgroundColor: platform?.color }}
                     >
@@ -390,7 +451,7 @@ function Results({ formData, results, onReset }: { formData: AssessmentFormData;
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="pt-2">
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-muted-foreground">3-Year ROI</span>
@@ -403,6 +464,45 @@ function Results({ formData, results, onReset }: { formData: AssessmentFormData;
           );
         })}
       </div>
+
+      <Card className={`border-2 ${tierAssignment.color}`} data-testid="card-tier-assignment">
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            <div className={`p-3 rounded-xl bg-background/80 border`}>
+              <TierIcon className={`w-8 h-8 ${tierAssignment.iconColor}`} />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-1">
+                <CardTitle className="text-xl">AI Readiness Tier</CardTitle>
+                <Badge className={tierAssignment.badgeColor} data-testid="badge-tier-name">
+                  {tierAssignment.tier}
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Readiness Score: <span className="font-mono font-semibold">{tierAssignment.score}/100</span>
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">{tierAssignment.description}</p>
+
+          <div className="pt-3 border-t">
+            <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+              <ChevronRight className="w-4 h-4" />
+              Recommended Next Steps
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {tierAssignment.nextSteps.map((step, i) => (
+                <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-background/60">
+                  <CheckCircle className={`w-4 h-4 mt-0.5 shrink-0 ${tierAssignment.iconColor}`} />
+                  <span className="text-sm">{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardContent className="pt-6">

@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { platforms, capabilityLabels } from "@/entities/platform/data";
 import type { Platform, PlatformCapabilities } from "@shared/schema";
 import { ArrowLeft, Trophy, TrendingUp, Users, DollarSign, Shield, Info } from "lucide-react";
+import { ExportMenu } from "@/features/export-data";
 
 interface ComparisonTabProps {
   selectedPlatforms: string[];
@@ -197,10 +198,13 @@ export function ComparisonTab({ selectedPlatforms, onBack }: ComparisonTabProps)
             Comparing {selectedData.length} platform{selectedData.length > 1 ? "s" : ""}
           </p>
         </div>
-        <Button variant="outline" onClick={onBack} data-testid="button-back-to-explorer">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Explorer
-        </Button>
+        <div className="flex items-center gap-2">
+          <ExportMenu data={selectedData} />
+          <Button variant="outline" onClick={onBack} data-testid="button-back-to-explorer">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Explorer
+          </Button>
+        </div>
       </div>
 
       <div className={`grid grid-cols-1 ${gridCols} gap-6`}>
