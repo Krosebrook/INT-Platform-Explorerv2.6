@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { ErrorBoundary } from "@/shared/ui/error-boundary";
 import { SkipLink } from "@/shared/ui/skip-link";
 import { CommandPalette } from "@/widgets/command-palette";
+import { FeedbackWidget } from "@/widgets/feedback-widget";
 import { useAuth } from "@/entities/user/use-auth";
 import { Sparkles, LogIn, LogOut, User } from "lucide-react";
 import sunsetBackground from "@assets/generated_images/sunset_landscape_with_orange_sun.png";
@@ -23,6 +24,7 @@ export function AppLayout({ selectedPlatforms, children }: AppLayoutProps) {
     <div className="min-h-screen relative">
       <SkipLink />
       <CommandPalette />
+      <FeedbackWidget />
 
       {/* Fixed Background Image */}
       <div

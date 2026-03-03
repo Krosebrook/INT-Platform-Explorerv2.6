@@ -21,6 +21,12 @@ import { CollaborationTab } from "@/pages/collaboration/ui";
 import { MarketplaceTab } from "@/pages/marketplace/ui";
 import { MCPToolsTab } from "@/pages/mcp-tools/ui";
 import { SettingsTab } from "@/pages/settings/ui";
+import { KnowledgeTab } from "@/pages/knowledge/ui";
+import { BestPracticesTab } from "@/pages/best-practices/ui";
+import { FeatureGuidesTab } from "@/pages/feature-guides/ui";
+import { OperationsTab } from "@/pages/operations/ui";
+import { ReferenceTab } from "@/pages/reference/ui";
+import { FAQTab } from "@/pages/faq/ui";
 import NotFound from "@/pages/not-found";
 import type { Stack } from "@/entities/stack";
 
@@ -85,6 +91,12 @@ export function AppRoutes({
       <Route path="/marketplace" component={MarketplaceTab} />
       <Route path="/mcp-tools" component={MCPToolsTab} />
       <Route path="/settings" component={SettingsTab} />
+      <Route path="/knowledge" component={KnowledgeTab} />
+      <Route path="/best-practices" component={BestPracticesTab} />
+      <Route path="/feature-guides" component={FeatureGuidesTab} />
+      <Route path="/operations" component={OperationsTab} />
+      <Route path="/reference" component={ReferenceTab} />
+      <Route path="/faq" component={FAQTab} />
       <Route component={NotFound} />
     </Switch>
   );

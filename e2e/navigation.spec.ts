@@ -21,6 +21,12 @@ const NAV_ITEMS = [
   { label: 'Microsoft', path: '/ecosystem', group: 'Ecosystem' },
   { label: 'App Marketplace', path: '/marketplace', group: 'Ecosystem' },
   { label: 'MCP Tools', path: '/mcp-tools', group: 'Ecosystem' },
+  { label: 'Knowledge Base', path: '/knowledge', group: 'Resources' },
+  { label: 'Best Practices', path: '/best-practices', group: 'Resources' },
+  { label: 'Feature Guides', path: '/feature-guides', group: 'Resources' },
+  { label: 'Operations Manual', path: '/operations', group: 'Resources' },
+  { label: 'Reference Library', path: '/reference', group: 'Resources' },
+  { label: 'FAQ', path: '/faq', group: 'Resources' },
   { label: 'Settings', path: '/settings', group: 'Settings' },
 ] as const;
 
@@ -34,7 +40,7 @@ test.describe('Sidebar Navigation', () => {
     const sidebar = page.locator('[data-slot="sidebar"]');
     await expect(sidebar).toBeAttached();
     await expect(page.locator('[data-testid="text-app-title"]')).toHaveText('INT Platform Explorer');
-    for (const groupLabel of ['Discover', 'Evaluate', 'Build', 'Operate', 'Ecosystem', 'Settings']) {
+    for (const groupLabel of ['Discover', 'Evaluate', 'Build', 'Operate', 'Ecosystem', 'Resources', 'Settings']) {
       await expect(page.locator('[data-sidebar="group-label"]', { hasText: groupLabel })).toBeAttached();
     }
   });

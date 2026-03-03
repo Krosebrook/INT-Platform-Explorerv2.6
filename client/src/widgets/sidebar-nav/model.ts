@@ -23,6 +23,12 @@ import {
   Store,
   Wrench,
   Settings,
+  BookOpen,
+  Lightbulb,
+  BookMarked,
+  ClipboardList,
+  Library,
+  HelpCircle,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -86,6 +92,18 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'Microsoft', icon: Building2, path: '/ecosystem' },
       { label: 'App Marketplace', icon: Store, path: '/marketplace' },
       { label: 'MCP Tools', icon: Wrench, path: '/mcp-tools' },
+    ],
+  },
+  {
+    label: 'Resources',
+    icon: BookOpen,
+    items: [
+      { label: 'Knowledge Base', icon: BookOpen, path: '/knowledge' },
+      { label: 'Best Practices', icon: Lightbulb, path: '/best-practices' },
+      { label: 'Feature Guides', icon: BookMarked, path: '/feature-guides' },
+      { label: 'Operations Manual', icon: ClipboardList, path: '/operations' },
+      { label: 'Reference Library', icon: Library, path: '/reference' },
+      { label: 'FAQ', icon: HelpCircle, path: '/faq' },
     ],
   },
   {
