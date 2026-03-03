@@ -1,1 +1,1 @@
-// barrel export
+export { ROICalculator } from './ui';

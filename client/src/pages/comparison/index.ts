@@ -1,1 +1,1 @@
-// barrel export
+export { ComparisonTab } from './ui';

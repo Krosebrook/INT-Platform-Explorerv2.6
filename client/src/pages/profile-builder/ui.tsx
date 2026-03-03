@@ -13,10 +13,10 @@ import {
   CLAUDE_MODELS, RECOMMENDED_MODELS,
   type Role
 } from "@/entities/role/profileData";
-import { PersonaProfileBuilder } from "@/components/PersonaProfileBuilder";
-import { ClientPersonasSection } from "@/components/ClientPersonasSection";
-import { RoleTaxonomySection } from "@/components/RoleTaxonomySection";
-import { AIStrategySection } from "@/components/AIStrategySection";
+import { PersonaProfileBuilder } from "./PersonaProfileBuilder";
+import { ClientPersonasSection } from "./ClientPersonasSection";
+import { RoleTaxonomySection } from "./RoleTaxonomySection";
+import { AIStrategySection } from "./AIStrategySection";
 
 function RoleSelector({ selectedRole, onSelectRole }: { selectedRole: Role; onSelectRole: (role: Role) => void }) {
   return (

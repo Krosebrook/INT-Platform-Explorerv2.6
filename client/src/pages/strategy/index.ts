@@ -1,1 +1,1 @@
-// barrel export
+export { StrategyTab } from './ui';

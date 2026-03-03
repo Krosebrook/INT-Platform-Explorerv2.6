@@ -1,1 +1,1 @@
-// barrel export
+export { ProfileBuilderTab } from './ui';

@@ -1,1 +1,1 @@
-// barrel export
+export { AssessmentTab } from './ui';

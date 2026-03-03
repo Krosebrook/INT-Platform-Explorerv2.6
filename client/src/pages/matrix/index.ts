@@ -1,1 +1,1 @@
-// barrel export
+export { MatrixTab } from './ui';

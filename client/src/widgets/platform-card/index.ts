@@ -1,1 +1,1 @@
-// barrel export
+export { PlatformCard } from './ui';

@@ -1,1 +1,1 @@
-// barrel export
+export { MicrosoftEcosystemTab } from './ui';

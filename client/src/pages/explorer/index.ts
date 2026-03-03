@@ -1,1 +1,1 @@
-// barrel export
+export { ExplorerTab } from './ui';

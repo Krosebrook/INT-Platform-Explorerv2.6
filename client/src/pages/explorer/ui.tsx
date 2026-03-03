@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Input } from "@/shared/ui/input";
 import { Badge } from "@/shared/ui/badge";
-import { PlatformCard } from "./PlatformCard";
+import { PlatformCard } from "@/widgets/platform-card/ui";
 import { platforms } from "@/entities/platform/data";
 import { ecosystems, ecosystemLabels } from "@/entities/platform/ecosystemData";
 import { Search, X, Filter, LayoutGrid, Layers } from "lucide-react";
