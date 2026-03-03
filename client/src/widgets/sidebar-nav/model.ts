@@ -10,6 +10,9 @@ import {
   Hammer,
   Globe,
   Building2,
+  Brain,
+  Layers,
+  FileText,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -32,6 +35,8 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'Explorer', icon: Compass, path: '/explorer' },
       { label: 'Comparison', icon: GitCompare, path: '/comparison' },
       { label: 'Matrix', icon: Grid3X3, path: '/matrix' },
+      { label: 'Intelligence Engine', icon: Brain, path: '/intelligence' },
+      { label: 'Saved Stacks', icon: Layers, path: '/stacks' },
     ],
   },
   {
@@ -41,6 +46,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: 'ROI Calculator', icon: Calculator, path: '/roi' },
       { label: 'Assessment', icon: ClipboardCheck, path: '/assessment' },
       { label: 'Strategy', icon: Star, path: '/strategy' },
+      { label: 'RFP Generator', icon: FileText, path: '/rfp' },
     ],
   },
   {

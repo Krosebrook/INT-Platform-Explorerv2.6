@@ -6,7 +6,7 @@ import { usePlatformCompare } from "@/features/platform-compare";
 import { useLocation } from "wouter";
 
 function PlatformExplorer() {
-  const { selectedPlatforms, togglePlatformSelection } = usePlatformCompare();
+  const { selectedPlatforms, togglePlatformSelection, loadStack } = usePlatformCompare();
   const [, setLocation] = useLocation();
 
   return (
@@ -15,6 +15,7 @@ function PlatformExplorer() {
         selectedPlatforms={selectedPlatforms}
         onToggleSelect={togglePlatformSelection}
         onGoToExplorer={() => setLocation("/explorer")}
+        onLoadStack={loadStack}
       />
     </AppLayout>
   );

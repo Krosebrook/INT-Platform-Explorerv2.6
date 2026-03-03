@@ -5,8 +5,38 @@ import { Label } from "@/shared/ui/label";
 import { Slider } from "@/shared/ui/slider";
 import { Badge } from "@/shared/ui/badge";
 import type { ROIInputs, ROIResults } from "@shared/schema";
-import { Calculator, DollarSign, TrendingUp, Clock, Users, Percent, BookOpen, Info } from "lucide-react";
+import { Calculator, DollarSign, TrendingUp, Clock, Users, Percent, BookOpen, Info, Zap } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { Button } from "@/shared/ui/button";
+
+interface ScenarioPreset {
+  label: string;
+  description: string;
+  inputs: ROIInputs;
+}
+
+const SCENARIO_PRESETS: Record<string, ScenarioPreset> = {
+  custom: {
+    label: "Custom",
+    description: "Enter your own values",
+    inputs: { employees: 500, averageSalary: 75000, adoptionPercentage: 60, weeklyProductivityGain: 7, annualPlatformCost: 12000, trainingCost: 5000 },
+  },
+  microsoft: {
+    label: "Microsoft 365 Copilot",
+    description: "$30/user/mo, high adoption",
+    inputs: { employees: 1000, averageSalary: 85000, adoptionPercentage: 75, weeklyProductivityGain: 8, annualPlatformCost: 360000, trainingCost: 15000 },
+  },
+  google: {
+    label: "Google Gemini Enterprise",
+    description: "$20/user/mo, moderate adoption",
+    inputs: { employees: 500, averageSalary: 80000, adoptionPercentage: 65, weeklyProductivityGain: 6, annualPlatformCost: 120000, trainingCost: 8000 },
+  },
+  hybrid: {
+    label: "Hybrid Multi-vendor",
+    description: "Best-of-breed across ecosystems",
+    inputs: { employees: 750, averageSalary: 90000, adoptionPercentage: 55, weeklyProductivityGain: 9, annualPlatformCost: 250000, trainingCost: 20000 },
+  },
+};
 
 const WEEKS_PER_YEAR = 48;
 
@@ -71,6 +101,7 @@ function MetricCard({
 }
 
 export function ROICalculator() {
+  const [activeScenario, setActiveScenario] = useState("custom");
   const [inputs, setInputs] = useState<ROIInputs>({
     employees: 500,
     averageSalary: 75000,
@@ -79,6 +110,13 @@ export function ROICalculator() {
     annualPlatformCost: 12000,
     trainingCost: 5000,
   });
+
+  const applyScenario = (key: string) => {
+    setActiveScenario(key);
+    if (key !== "custom") {
+      setInputs(SCENARIO_PRESETS[key].inputs);
+    }
+  };
 
   const results = useMemo<ROIResults>(() => {
     const adoptedEmployees = Math.round(inputs.employees * (inputs.adoptionPercentage / 100));
@@ -104,6 +142,7 @@ export function ROICalculator() {
   }, [inputs]);
 
   const updateInput = <K extends keyof ROIInputs>(key: K, value: ROIInputs[K]) => {
+    setActiveScenario("custom");
     setInputs((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -124,6 +163,31 @@ export function ROICalculator() {
           Research-backed methodology
         </Badge>
       </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Scenario Presets</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(SCENARIO_PRESETS).map(([key, preset]) => (
+              <Button
+                key={key}
+                variant={activeScenario === key ? "default" : "outline"}
+                size="sm"
+                onClick={() => applyScenario(key)}
+                data-testid={`scenario-${key}`}
+              >
+                {preset.label}
+              </Button>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {SCENARIO_PRESETS[activeScenario].description}
+          </p>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>

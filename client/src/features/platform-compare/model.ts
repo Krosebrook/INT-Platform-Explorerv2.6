@@ -18,6 +18,9 @@ export interface PlatformCompareResult {
   /** Clear all selected platforms */
   clearSelection: () => void;
 
+  /** Replace selection with a list of platform IDs (e.g. from a saved stack) */
+  loadStack: (platformIds: string[]) => void;
+
   /** Whether the maximum number of selections has been reached */
   isMaxSelected: boolean;
 }
@@ -47,12 +50,17 @@ export function usePlatformCompare(): PlatformCompareResult {
     setSelectedPlatforms([]);
   }, []);
 
+  const loadStack = useCallback((platformIds: string[]) => {
+    setSelectedPlatforms(platformIds.slice(0, MAX_COMPARE_SELECTIONS));
+  }, []);
+
   const isMaxSelected = selectedPlatforms.length >= MAX_COMPARE_SELECTIONS;
 
   return {
     selectedPlatforms,
     togglePlatformSelection,
     clearSelection,
+    loadStack,
     isMaxSelected,
   };
 }

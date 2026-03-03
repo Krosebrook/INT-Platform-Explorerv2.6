@@ -4,9 +4,13 @@ import { Badge } from "@/shared/ui/badge";
 import { PlatformCard } from "@/widgets/platform-card/ui";
 import { platforms } from "@/entities/platform/data";
 import { ecosystems, ecosystemLabels } from "@/entities/platform/ecosystemData";
-import { Search, X, Filter, LayoutGrid, Layers } from "lucide-react";
+import { ExportMenu } from "@/features/export-data";
+import { Search, X, Filter, LayoutGrid, Layers, LayoutList, Grid3X3 } from "lucide-react";
 import { Button } from "@/shared/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
 import type { EcosystemType } from "@shared/schema";
+
+type ViewMode = "grid" | "table";
 
 interface ExplorerTabProps {
   selectedPlatforms: string[];
@@ -21,6 +25,7 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeTier, setActiveTier] = useState("All");
   const [activeEcosystem, setActiveEcosystem] = useState<EcosystemType | "All">("All");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const filteredPlatforms = useMemo(() => {
     return platforms.filter((platform) => {
@@ -156,11 +161,34 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
           Showing <span className="font-semibold text-foreground">{filteredPlatforms.length}</span> of{" "}
           <span className="font-semibold text-foreground">{platforms.length}</span> platforms
         </p>
-        {selectedPlatforms.length > 0 && (
-          <Badge variant="secondary" className="font-mono">
-            {selectedPlatforms.length}/4 selected for comparison
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {selectedPlatforms.length > 0 && (
+            <Badge variant="secondary" className="font-mono">
+              {selectedPlatforms.length}/4 selected for comparison
+            </Badge>
+          )}
+          <div className="flex items-center border rounded-md">
+            <Button
+              variant={viewMode === "grid" ? "secondary" : "ghost"}
+              size="icon"
+              className="h-8 w-8 rounded-r-none"
+              onClick={() => setViewMode("grid")}
+              data-testid="view-mode-grid"
+            >
+              <Grid3X3 className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "table" ? "secondary" : "ghost"}
+              size="icon"
+              className="h-8 w-8 rounded-l-none"
+              onClick={() => setViewMode("table")}
+              data-testid="view-mode-table"
+            >
+              <LayoutList className="h-4 w-4" />
+            </Button>
+          </div>
+          <ExportMenu data={filteredPlatforms} />
+        </div>
       </div>
 
       {filteredPlatforms.length === 0 ? (
@@ -176,7 +204,7 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
             Reset all filters
           </Button>
         </div>
-      ) : (
+      ) : viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPlatforms.map((platform) => (
             <PlatformCard
@@ -187,6 +215,45 @@ export function ExplorerTab({ selectedPlatforms, onToggleSelect }: ExplorerTabPr
               maxSelectionsReached={selectedPlatforms.length >= 4}
             />
           ))}
+        </div>
+      ) : (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Priority</TableHead>
+                <TableHead className="hidden md:table-cell">Ecosystem</TableHead>
+                <TableHead className="hidden lg:table-cell">Pricing</TableHead>
+                <TableHead className="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredPlatforms.map((platform) => {
+                const isSelected = selectedPlatforms.includes(platform.id);
+                return (
+                  <TableRow key={platform.id} className={isSelected ? "bg-primary/5" : ""}>
+                    <TableCell className="font-medium">{platform.name}</TableCell>
+                    <TableCell><Badge variant="outline">{platform.category}</Badge></TableCell>
+                    <TableCell><Badge variant={platform.priority === "Tier 1" ? "default" : "secondary"}>{platform.priority}</Badge></TableCell>
+                    <TableCell className="hidden md:table-cell">{platform.ecosystem ?? "N/A"}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{platform.pricing}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant={isSelected ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => onToggleSelect(platform.id)}
+                        disabled={!isSelected && selectedPlatforms.length >= 4}
+                      >
+                        {isSelected ? "Selected" : "Compare"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
