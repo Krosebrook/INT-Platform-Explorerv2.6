@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Badge } from "@/shared/ui/badge";
 import { platforms, strategyTiers } from "@/lib/platformData";
 import { ecosystems, ecosystemLabels, getEcosystemById } from "@/lib/ecosystemData";
 import type { EcosystemType } from "@shared/schema";

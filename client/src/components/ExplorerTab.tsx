@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Input } from "@/shared/ui/input";
+import { Badge } from "@/shared/ui/badge";
 import { PlatformCard } from "./PlatformCard";
 import { platforms } from "@/lib/platformData";
 import { ecosystems, ecosystemLabels } from "@/lib/ecosystemData";
 import { Search, X, Filter, LayoutGrid, Layers } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/button";
 import type { EcosystemType } from "@shared/schema";
 
 interface ExplorerTabProps {

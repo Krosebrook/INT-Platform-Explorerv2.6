@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Badge } from "@/shared/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { ScrollArea, ScrollBar } from "@/shared/ui/scroll-area";
 import { platforms, capabilityLabels, matrixFeatures } from "@/lib/platformData";
 import { ecosystems, ecosystemLabels, getEcosystemById } from "@/lib/ecosystemData";
 import type { PlatformCapabilities, EcosystemType } from "@shared/schema";
