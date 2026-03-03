@@ -1,1 +1,1 @@
-// barrel export
+export { ThemeToggle } from "./ui";

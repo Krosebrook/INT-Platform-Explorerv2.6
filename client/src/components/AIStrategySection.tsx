@@ -37,7 +37,7 @@ import {
   type HybridIntelligenceModel,
   type DataTriageEntry,
   type DepartmentROI
-} from "@/lib/aiStrategyData";
+} from "@/entities/platform/strategyData";
 
 function OverviewSection() {
   const [expandedObjection, setExpandedObjection] = useState<string | null>(null);

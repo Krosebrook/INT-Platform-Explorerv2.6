@@ -12,7 +12,7 @@ import {
   ROLES, SECURITY_FEATURES, KEY_CAPABILITIES, ROLE_PROFILES, DEPLOYMENT_PHASES,
   CLAUDE_MODELS, RECOMMENDED_MODELS,
   type Role
-} from "@/lib/profileData";
+} from "@/entities/role/profileData";
 import { PersonaProfileBuilder } from "@/components/PersonaProfileBuilder";
 import { ClientPersonasSection } from "@/components/ClientPersonasSection";
 import { RoleTaxonomySection } from "@/components/RoleTaxonomySection";

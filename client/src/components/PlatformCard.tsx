@@ -3,7 +3,7 @@ import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import type { Platform } from "@shared/schema";
-import { ecosystemLabels, specialtyLabels, getEcosystemById } from "@/lib/ecosystemData";
+import { ecosystemLabels, specialtyLabels, getEcosystemById } from "@/entities/platform/ecosystemData";
 import { Plus, Check, TrendingUp, Layers } from "lucide-react";
 
 interface PlatformCardProps {

@@ -11,6 +11,9 @@ Enterprise decision-support tool for comparing AI platforms. Evaluate 16 AI plat
 - **Strategy Tab**: 3-tier platform recommendations
 - **Assessment Tab**: 5-step AI readiness wizard
 - **Profile Builder**: Claude enterprise configuration guide
+- **Ecosystem View**: Microsoft ecosystem integration map
+
+> **Note:** The frontend is being refactored from a monolithic `components/` + `lib/` structure to [Feature-Sliced Design (FSD)](https://feature-sliced.design/). The `shared/` layer (UI, API, lib) is complete. Entity, feature, widget, and page scaffolding is in place. Migration of remaining components is ongoing.
 
 ## Tech Stack
 
@@ -53,21 +56,57 @@ The application will be available at `http://localhost:5000`
 
 ## Project Structure
 
+The frontend follows **Feature-Sliced Design (FSD)** — a layered architecture where each layer has a clear responsibility and strict import rules (layers can only import from layers below them).
+
 ```
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/     # UI components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── lib/            # Utilities and API client
-│   │   └── pages/          # Page components
-├── server/                 # Express backend
-│   ├── routes.ts           # API endpoints
-│   ├── storage.ts          # Data storage layer
-│   └── db.ts               # Database connection
-├── shared/                 # Shared types and schemas
-│   ├── schema.ts           # TypeScript interfaces
-│   └── validation.ts       # Zod validation schemas
-└── docs/                   # Documentation
+client/src/
+├── app/                    # App layer: providers, routes, layout, styles
+│   ├── providers/          # React context providers
+│   ├── routes/             # Wouter route definitions
+│   └── styles/             # Global CSS
+├── pages/                  # Page layer: one directory per route
+│   ├── explorer/           # Platform explorer
+│   ├── comparison/         # Side-by-side comparison
+│   ├── matrix/             # Feature matrix
+│   ├── roi/                # ROI calculator
+│   ├── strategy/           # AI strategy advisor
+│   ├── assessment/         # Readiness assessment
+│   ├── profile-builder/    # Profile builder
+│   └── ecosystem/          # Microsoft ecosystem
+├── widgets/                # Compositional components used across pages
+│   ├── sidebar-nav/        # Main navigation sidebar
+│   └── platform-card/      # Reusable platform card
+├── features/               # Business logic slices
+│   ├── platform-search/    # Search and filter platforms
+│   ├── platform-compare/   # Platform comparison selection
+│   ├── theme-toggle/       # Dark/light theme switching
+│   ├── roi-calculation/    # ROI formula engine
+│   └── assessment-wizard/  # Assessment wizard state
+├── entities/               # Domain models and data
+│   ├── platform/           # Platform data, types, API
+│   ├── user/               # User model and auth
+│   ├── persona/            # Persona definitions
+│   ├── role/               # Role taxonomy
+│   └── assessment/         # Assessment questions
+└── shared/                 # Shared utilities (no business logic)
+    ├── ui/                 # shadcn/ui components (47 components)
+    ├── api/                # API client (queryClient, fetch helpers)
+    ├── lib/                # Utility functions (cn, auth-utils)
+    └── config/             # App configuration constants
+```
+
+> **Legacy directories** (`client/src/components/`, `client/src/lib/`, `client/src/hooks/`) still exist during the migration and will be removed once all code is ported to the FSD layers above.
+
+### Backend & Shared
+
+```
+server/                     # Express backend
+├── routes.ts               # API endpoints
+├── storage.ts              # Data storage layer
+└── db.ts                   # Database connection
+shared/                     # Shared types and schemas (used by both client & server)
+├── schema.ts               # TypeScript interfaces
+└── validation.ts           # Zod validation schemas
 ```
 
 ## API Endpoints

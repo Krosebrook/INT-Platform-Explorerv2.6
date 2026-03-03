@@ -14,7 +14,7 @@ import {
   DEPARTMENTS, COMPLIANCE_STANDARDS, INTEGRATION_CATEGORIES, PAIN_POINTS,
   AI_PLATFORMS, calculateAllPlatformROI,
   type AssessmentFormData, type Department, type PlatformROI
-} from "@/lib/assessmentData";
+} from "@/entities/assessment/data";
 
 function Step1({ formData, setFormData }: { formData: AssessmentFormData; setFormData: (data: AssessmentFormData) => void }) {
   return (

@@ -37,7 +37,7 @@ import {
   frontierModels,
   type MicrosoftProduct,
   type MicrosoftLicenseOption
-} from "@/lib/microsoftEcosystemData";
+} from "@/entities/platform/microsoftData";
 
 const categoryIcons: Record<MicrosoftProduct["category"], typeof Bot> = {
   "Agent Platform": Bot,

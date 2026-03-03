@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
-import { platforms, strategyTiers } from "@/lib/platformData";
-import { ecosystems, ecosystemLabels, getEcosystemById } from "@/lib/ecosystemData";
+import { platforms, strategyTiers } from "@/entities/platform/data";
+import { ecosystems, ecosystemLabels, getEcosystemById } from "@/entities/platform/ecosystemData";
 import type { EcosystemType } from "@shared/schema";
 import { Target, Award, Rocket, Star, BookOpen, ArrowRight, CheckCircle2, Layers } from "lucide-react";
 

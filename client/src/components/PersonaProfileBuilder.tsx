@@ -27,8 +27,8 @@ import {
   type PersonaCategory,
   type TechProficiency,
   type BudgetTier
-} from "@/lib/personaData";
-import { CLAUDE_MODELS } from "@/lib/profileData";
+} from "@/entities/persona/data";
+import { CLAUDE_MODELS } from "@/entities/role/profileData";
 
 function getIconForCategory(category: string) {
   if (category.includes('Executive') || category.includes('Decision')) return Building2;

@@ -20,7 +20,7 @@ import {
   type TaxonomyRole,
   type TaxonomyTeam,
   type FeatureAccess
-} from "@/lib/roleTaxonomyData";
+} from "@/entities/role/data";
 
 // Simple debounce utility for optimization
 function useDebounce<T>(value: T, delay: number): T {

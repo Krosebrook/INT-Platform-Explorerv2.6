@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Badge } from "@/shared/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { ScrollArea, ScrollBar } from "@/shared/ui/scroll-area";
-import { platforms, capabilityLabels, matrixFeatures } from "@/lib/platformData";
-import { ecosystems, ecosystemLabels, getEcosystemById } from "@/lib/ecosystemData";
+import { platforms, capabilityLabels, matrixFeatures } from "@/entities/platform/data";
+import { ecosystems, ecosystemLabels, getEcosystemById } from "@/entities/platform/ecosystemData";
 import type { PlatformCapabilities, EcosystemType } from "@shared/schema";
 import { Grid3X3, Info, Layers } from "lucide-react";
 
