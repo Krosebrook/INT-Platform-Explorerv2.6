@@ -31,6 +31,10 @@ import {
   microsoftLicenses,
   frontierFirmCapabilities,
   mcpIntegrations,
+  frontierAgents,
+  copilotCreditConsumption,
+  agentModeApps,
+  frontierModels,
   type MicrosoftProduct,
   type MicrosoftLicenseOption
 } from "@/lib/microsoftEcosystemData";
@@ -317,49 +321,175 @@ function LicenseComparisonTable() {
 
 function FrontierFirmSection() {
   return (
-    <Card className="border-purple-500/30 bg-gradient-to-br from-purple-500/5 to-blue-500/5">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-purple-500" />
-          {frontierFirmCapabilities.title}
-        </CardTitle>
-        <CardDescription>{frontierFirmCapabilities.description}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-adoption-rate">
-            <div className="text-2xl font-bold text-purple-500">{frontierFirmCapabilities.statistics.adoptionRate}</div>
-            <div className="text-sm text-muted-foreground">Adoption Rate</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-outcome-multiplier">
-            <div className="text-2xl font-bold text-green-500">{frontierFirmCapabilities.statistics.outcomeMultiplier}</div>
-            <div className="text-sm text-muted-foreground">Better Outcomes</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-leadership-urgency">
-            <div className="text-2xl font-bold text-blue-500">{frontierFirmCapabilities.statistics.leadershipUrgency}</div>
-            <div className="text-sm text-muted-foreground">Leaders See Urgency</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-integration-timeline">
-            <div className="text-2xl font-bold text-orange-500">{frontierFirmCapabilities.statistics.agentIntegrationTimeline}</div>
-            <div className="text-sm text-muted-foreground">Integration Timeline</div>
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-4">
-          {frontierFirmCapabilities.pillars.map((pillar, i) => (
-            <div key={i} className="p-4 rounded-lg border bg-background">
-              <h4 className="font-semibold mb-2">{pillar.name}</h4>
-              <p className="text-sm text-muted-foreground mb-3">{pillar.description}</p>
-              <div className="flex flex-wrap gap-1">
-                {pillar.capabilities.map((cap, j) => (
-                  <Badge key={j} variant="secondary" className="text-xs">{cap}</Badge>
-                ))}
-              </div>
+    <div className="space-y-6">
+      <Card className="border-purple-500/30 bg-gradient-to-br from-purple-500/5 to-blue-500/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-purple-500" />
+            {frontierFirmCapabilities.title}
+          </CardTitle>
+          <CardDescription>{frontierFirmCapabilities.description}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-adoption-rate">
+              <div className="text-2xl font-bold text-purple-500">{frontierFirmCapabilities.statistics.adoptionRate}</div>
+              <div className="text-sm text-muted-foreground">Adoption Rate</div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-outcome-multiplier">
+              <div className="text-2xl font-bold text-green-500">{frontierFirmCapabilities.statistics.outcomeMultiplier}</div>
+              <div className="text-sm text-muted-foreground">Better Outcomes</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-leadership-urgency">
+              <div className="text-2xl font-bold text-blue-500">{frontierFirmCapabilities.statistics.leadershipUrgency}</div>
+              <div className="text-sm text-muted-foreground">Leaders See Urgency</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-background border" data-testid="stat-integration-timeline">
+              <div className="text-2xl font-bold text-orange-500">{frontierFirmCapabilities.statistics.agentIntegrationTimeline}</div>
+              <div className="text-sm text-muted-foreground">Integration Timeline</div>
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            {frontierFirmCapabilities.pillars.map((pillar, i) => (
+              <div key={i} className="p-4 rounded-lg border bg-background">
+                <h4 className="font-semibold mb-2">{pillar.name}</h4>
+                <p className="text-sm text-muted-foreground mb-3">{pillar.description}</p>
+                <div className="flex flex-wrap gap-1">
+                  {pillar.capabilities.map((cap, j) => (
+                    <Badge key={j} variant="secondary" className="text-xs">{cap}</Badge>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-amber-500" />
+            {frontierModels.title}
+          </CardTitle>
+          <CardDescription>{frontierModels.description}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {frontierModels.models.map((model, i) => (
+              <div key={i} className="p-4 rounded-lg border bg-background" data-testid={`model-${i}`}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-semibold">{model.name}</span>
+                  <Badge variant="outline" className="text-xs border-purple-500 text-purple-600 dark:text-purple-400">
+                    {model.availableDate ? `${model.status} (${model.availableDate})` : model.status}
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground mb-2">{model.provider}</p>
+                <p className="text-sm">{model.bestFor}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {frontierModels.advantages.map((adv, i) => (
+              <Badge key={i} variant="secondary" className="text-xs">
+                <CheckCircle2 className="h-3 w-3 mr-1" />
+                {adv}
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bot className="h-5 w-5 text-blue-500" />
+            Frontier Agents (Copilot Studio)
+          </CardTitle>
+          <CardDescription>Pre-built autonomous agents available through the Frontier Program</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {frontierAgents.map((agent, i) => (
+              <div key={i} className="p-4 rounded-lg border bg-background hover-elevate" data-testid={`frontier-agent-${i}`}>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h4 className="font-semibold">{agent.name}</h4>
+                  <Badge 
+                    variant={agent.status === "GA" ? "default" : "secondary"}
+                    className={agent.status === "Frontier" ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300" : ""}
+                  >
+                    {agent.status}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">{agent.capability}</p>
+                <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t">
+                  <span className="text-xs text-muted-foreground">{agent.availability}</span>
+                  <Badge variant="outline" className="text-xs">{agent.useCase.split(",")[0]}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-green-500" />
+              Copilot Credit Consumption
+            </CardTitle>
+            <CardDescription>How different agent actions consume Copilot Credits</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {copilotCreditConsumption.map((item, i) => (
+                <div key={i} className="flex items-center justify-between gap-4 flex-wrap p-3 rounded-lg border" data-testid={`credit-${i}`}>
+                  <div className="flex-1 min-w-0">
+                    <span className="font-medium text-sm">{item.actionType}</span>
+                    <p className="text-xs text-muted-foreground truncate">{item.notes}</p>
+                  </div>
+                  <Badge variant={item.credits >= 10 ? "destructive" : item.credits >= 5 ? "secondary" : "default"}>
+                    {item.credits === 0 ? "Variable" : `${item.credits} credits`}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-blue-500" />
+              Agent Mode in Office Apps
+            </CardTitle>
+            <CardDescription>AI-powered iterative creation in Microsoft 365 apps</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {agentModeApps.map((app, i) => (
+                <div key={i} className="p-4 rounded-lg border bg-background" data-testid={`agent-mode-${i}`}>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="font-semibold">{app.app}</span>
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant={app.status === "GA" ? "default" : "secondary"}
+                        className={app.status === "Frontier" ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300" : ""}
+                      >
+                        {app.status}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">{app.availableDate}</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{app.capability}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
 
