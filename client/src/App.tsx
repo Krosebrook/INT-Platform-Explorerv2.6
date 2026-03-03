@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { queryClient } from "./lib/queryClient";
+import { queryClient } from "@/shared/api/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/shared/ui/toaster";
 import { TooltipProvider } from "@/shared/ui/tooltip";
