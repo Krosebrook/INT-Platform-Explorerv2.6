@@ -1,19 +1,54 @@
 # INT Platform Explorer v4.0
 
-Enterprise decision-support tool for comparing AI platforms. Evaluate 16 AI platforms across 25 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations.
+Enterprise decision-support tool for comparing AI platforms. Evaluate 50 AI platforms across 20 capability dimensions, calculate ROI, and generate tiered recommendations for stakeholder presentations. Consolidated from three source projects (P1 main app, P2 AI Platform Explorer, P3 Enterprise Profile Builder) into a single full-stack application.
 
 ## Features
 
-- **Explorer Tab**: Browse and filter 16 AI platforms with detailed capability scores
-- **Comparison Tab**: Side-by-side analysis of up to 4 platforms
-- **Matrix Tab**: Capability grid visualization across all dimensions
-- **ROI Calculator**: Business case tool with productivity and cost analysis
-- **Strategy Tab**: 3-tier platform recommendations
-- **Assessment Tab**: 5-step AI readiness wizard
-- **Profile Builder**: Claude enterprise configuration guide
-- **Ecosystem View**: Microsoft ecosystem integration map
+### Discover
+- **Explorer**: Browse and filter 50 AI platforms with grid/table views and CSV/JSON export
+- **Comparison**: Side-by-side analysis of up to 4 platforms with export menu
+- **Matrix**: Capability grid visualization across all dimensions
+- **Intelligence Engine**: Multi-step wizard recommending platforms by department, capabilities, and budget
+- **Saved Stacks**: Save, load, and manage curated platform collections
 
-> The frontend has been fully refactored to [Feature-Sliced Design (FSD)](https://feature-sliced.design/). All components, hooks, and data files have been migrated to their FSD layers. Navigation uses a collapsible sidebar with wouter routing.
+### Evaluate
+- **ROI Calculator**: Business case tool with scenario presets (Microsoft, Google, Hybrid) and 3-year projection charts
+- **Assessment**: 5-step AI readiness wizard with tier assignment (AI Native / Adopter / Explorer)
+- **Strategy**: 3-tier platform recommendations with stats summary and PDF export
+- **RFP Generator**: Section-based RFP document builder
+
+### Build
+- **Profile Builder**: Claude enterprise configuration guide with persona and role taxonomy
+- **Agent Builder**: AI agent configuration, template library, and test playground
+- **System Baseline**: Security directives, behavioral rules, and role-based templates
+
+### Operate
+- **Dashboard**: Stats overview, quick navigation, and getting-started steps
+- **Analytics**: KPI cards, usage charts, and model breakdown (Recharts)
+- **Deployment**: Phase-based deployment planning with progress tracking
+- **Governance**: IR playbooks, SLA metrics, risk register, staging checklists
+- **Collaboration**: Workspace management and activity feed
+
+### Ecosystem
+- **Microsoft**: Microsoft ecosystem integration map
+- **App Marketplace**: Integration catalog (Slack, GitHub, Notion, etc.)
+- **MCP Tools**: MCP server catalog and built-in skills directory
+
+### Resources
+- **Knowledge Base**: 15 articles across 5 categories with search
+- **Best Practices**: 24 practices with category and difficulty filters
+- **Feature Guides**: 10 feature walkthroughs with highlights and use cases
+- **Operations Manual**: Service tiers, ROI framework, success metrics, troubleshooting
+- **Reference Library**: 12 documents across 4 audience categories
+- **FAQ**: 28 items with search and category filtering
+
+### Global
+- **Command Palette**: Cmd+K / Ctrl+K quick navigation across all routes
+- **Feedback Widget**: Floating feedback form with type, rating, and description
+- **Settings**: Profile, preferences, and notification management
+- **Collapsible Sidebar**: 7-group navigation with persistent collapse state
+
+> Built with [Feature-Sliced Design (FSD)](https://feature-sliced.design/) — a layered architecture with strict import rules. Navigation uses a collapsible sidebar with wouter routing.
 
 ## Tech Stack
 
@@ -64,30 +99,58 @@ client/src/
 │   ├── providers/          # React context providers
 │   ├── routes/             # Wouter route definitions
 │   └── styles/             # Global CSS
-├── pages/                  # Page layer: one directory per route
-│   ├── explorer/           # Platform explorer
+├── pages/                  # Page layer: one directory per route (27 pages)
+│   ├── explorer/           # Platform explorer (grid/table views)
 │   ├── comparison/         # Side-by-side comparison
 │   ├── matrix/             # Feature matrix
-│   ├── roi/                # ROI calculator
-│   ├── strategy/           # AI strategy advisor
-│   ├── assessment/         # Readiness assessment
+│   ├── intelligence/       # Intelligence Engine wizard
+│   ├── stacks/             # Saved platform stacks
+│   ├── roi/                # ROI calculator with scenario presets
+│   ├── assessment/         # Readiness assessment with tier assignment
+│   ├── strategy/           # AI strategy advisor with PDF export
+│   ├── rfp/                # RFP document generator
 │   ├── profile-builder/    # Profile builder
-│   └── ecosystem/          # Microsoft ecosystem
+│   ├── agent-builder/      # Agent configuration builder
+│   ├── baseline/           # System baseline templates
+│   ├── dashboard/          # Overview dashboard
+│   ├── analytics/          # Usage analytics charts
+│   ├── deployment/         # Deployment planning
+│   ├── governance/         # Governance & compliance
+│   ├── collaboration/      # Workspace collaboration
+│   ├── ecosystem/          # Microsoft ecosystem
+│   ├── marketplace/        # App marketplace
+│   ├── mcp-tools/          # MCP tools catalog
+│   ├── knowledge/          # Knowledge base articles
+│   ├── best-practices/     # Best practices guide
+│   ├── feature-guides/     # Feature walkthroughs
+│   ├── operations/         # Operations manual
+│   ├── reference/          # Reference library
+│   ├── faq/                # FAQ
+│   └── settings/           # User settings
 ├── widgets/                # Compositional components used across pages
-│   ├── sidebar-nav/        # Main navigation sidebar
+│   ├── sidebar-nav/        # Main navigation sidebar (7 groups, 27 items)
+│   ├── command-palette/    # Cmd+K quick navigation
+│   ├── feedback-widget/    # Floating feedback form
 │   └── platform-card/      # Reusable platform card
 ├── features/               # Business logic slices
 │   ├── platform-search/    # Search and filter platforms
-│   ├── platform-compare/   # Platform comparison selection
+│   ├── platform-compare/   # Platform comparison selection (max 4)
 │   ├── theme-toggle/       # Dark/light theme switching
 │   ├── roi-calculation/    # ROI formula engine
-│   └── assessment-wizard/  # Assessment wizard state
+│   ├── assessment-wizard/  # Assessment wizard state
+│   ├── intelligence-engine/# Intelligence Engine wizard logic
+│   ├── stack-management/   # Stack CRUD operations
+│   ├── rfp-generation/     # RFP document model
+│   ├── export-data/        # CSV/JSON export actions
+│   └── agent-configuration/# Agent builder logic
 ├── entities/               # Domain models and data
 │   ├── platform/           # Platform data, types, API
 │   ├── user/               # User model and auth
 │   ├── persona/            # Persona definitions
 │   ├── role/               # Role taxonomy
-│   └── assessment/         # Assessment questions
+│   ├── assessment/         # Assessment questions
+│   ├── stack/              # Saved stack model
+│   └── agent/              # Agent templates and types
 └── shared/                 # Shared utilities (no business logic)
     ├── ui/                 # shadcn/ui components (47 components)
     ├── api/                # API client (queryClient, fetch helpers)
@@ -144,10 +207,11 @@ shared/                     # Shared types and schemas (used by both client & se
 
 ## Performance
 
-- Lazy loading for tab content
+- Client-side routing with wouter (no full-page reloads)
 - In-memory caching for platform data
 - TanStack Query for efficient data fetching
 - Vite for fast development and optimized builds
+- localStorage persistence for user preferences and state
 
 ## Contributing
 
