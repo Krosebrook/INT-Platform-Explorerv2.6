@@ -210,3 +210,67 @@
 - Semantic HTML structure (proper heading hierarchy)
 - Skip navigation links
 - ARIA labels for dynamic content updates (ROI calculations)
+
+---
+
+## Feature-Sliced Design Architecture
+
+The frontend is organized using **Feature-Sliced Design (FSD)**, a layered architecture that enforces clear separation of concerns and predictable dependency flow.
+
+### The 6-Layer Hierarchy
+
+Layers are listed from highest (most composed) to lowest (most reusable). **A layer may only import from layers below it** -- never from the same layer or above.
+
+```
+app  →  pages  →  widgets  →  features  →  entities  →  shared
+```
+
+| Layer | Responsibility | Example contents |
+|-------|---------------|------------------|
+| **app** | Bootstrap, providers, routing, global styles | `providers/`, `routes/`, `styles/` |
+| **pages** | Full-page compositions, one per route | `explorer/`, `roi/`, `assessment/` |
+| **widgets** | Self-contained UI blocks used across pages | `sidebar-nav/`, `platform-card/` |
+| **features** | User-facing business logic (one use-case per slice) | `platform-search/`, `roi-calculation/` |
+| **entities** | Domain models, types, and data-fetching hooks | `platform/`, `user/`, `persona/` |
+| **shared** | Pure utilities, UI primitives, configs (no business logic) | `ui/`, `api/`, `lib/`, `config/` |
+
+### Import Rules
+
+- `pages/explorer/` **can** import from `widgets/`, `features/`, `entities/`, `shared/`.
+- `features/platform-search/` **can** import from `entities/`, `shared/`.
+- `features/platform-search/` **cannot** import from `features/roi-calculation/` (same layer).
+- `shared/ui/` **cannot** import from any layer above it.
+- Cross-slice imports within the same layer are forbidden. If two features need shared logic, extract it to `entities/` or `shared/`.
+
+### How to Add a New Page
+
+1. Create a directory under `client/src/pages/<page-name>/`.
+2. Add an `index.ts` barrel export and a `ui.tsx` component file.
+3. Register the route in `app/routes/` using Wouter.
+4. Add a sidebar entry in `widgets/sidebar-nav/`.
+
+```
+pages/
+└── my-new-page/
+    ├── index.ts          # Public API (re-export)
+    └── ui.tsx            # Page component
+```
+
+### How to Add a New Feature
+
+1. Create a directory under `client/src/features/<feature-name>/`.
+2. Add `model.ts` for state/logic and optionally `ui.tsx` for UI.
+3. Export the public API through `index.ts`.
+4. Import only from `entities/` and `shared/`.
+
+```
+features/
+└── my-feature/
+    ├── index.ts          # Public API (re-export)
+    ├── model.ts          # Business logic, hooks, state
+    └── ui.tsx            # (Optional) Feature-specific UI
+```
+
+### Slice Internals Convention
+
+Each slice (directory within a layer) should expose only what is needed through its `index.ts`. Internal files are considered private -- other slices must not import from internal paths (e.g., `features/platform-search/model.ts`) directly; always import from the slice root (`features/platform-search`).

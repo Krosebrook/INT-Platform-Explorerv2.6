@@ -1,0 +1,460 @@
+import { useState, useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
+import { Slider } from "@/shared/ui/slider";
+import { Badge } from "@/shared/ui/badge";
+import type { ROIInputs, ROIResults } from "@shared/schema";
+import { Calculator, DollarSign, TrendingUp, Clock, Users, Percent, BookOpen, Info, Zap } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { Button } from "@/shared/ui/button";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from "recharts";
+
+interface ScenarioPreset {
+  label: string;
+  description: string;
+  inputs: ROIInputs;
+}
+
+const SCENARIO_PRESETS: Record<string, ScenarioPreset> = {
+  custom: {
+    label: "Custom",
+    description: "Enter your own values",
+    inputs: { employees: 500, averageSalary: 75000, adoptionPercentage: 60, weeklyProductivityGain: 7, annualPlatformCost: 12000, trainingCost: 5000 },
+  },
+  microsoft: {
+    label: "Microsoft 365 Copilot",
+    description: "$30/user/mo, high adoption",
+    inputs: { employees: 1000, averageSalary: 85000, adoptionPercentage: 75, weeklyProductivityGain: 8, annualPlatformCost: 360000, trainingCost: 15000 },
+  },
+  google: {
+    label: "Google Gemini Enterprise",
+    description: "$20/user/mo, moderate adoption",
+    inputs: { employees: 500, averageSalary: 80000, adoptionPercentage: 65, weeklyProductivityGain: 6, annualPlatformCost: 120000, trainingCost: 8000 },
+  },
+  hybrid: {
+    label: "Hybrid Multi-vendor",
+    description: "Best-of-breed across ecosystems",
+    inputs: { employees: 750, averageSalary: 90000, adoptionPercentage: 55, weeklyProductivityGain: 9, annualPlatformCost: 250000, trainingCost: 20000 },
+  },
+};
+
+const WEEKS_PER_YEAR = 48;
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function formatPercent(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "percent",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value / 100);
+}
+
+function MetricCard({ 
+  title, 
+  value, 
+  subtitle, 
+  icon: Icon, 
+  variant = "default" 
+}: { 
+  title: string; 
+  value: string; 
+  subtitle?: string; 
+  icon: React.ComponentType<{ className?: string }>;
+  variant?: "default" | "success" | "primary";
+}) {
+  const variantStyles = {
+    default: "bg-card",
+    success: "bg-emerald-500/10 border-emerald-500/20",
+    primary: "bg-primary/10 border-primary/20",
+  };
+
+  const iconStyles = {
+    default: "text-muted-foreground",
+    success: "text-emerald-500",
+    primary: "text-primary",
+  };
+
+  return (
+    <Card className={variantStyles[variant]}>
+      <CardContent className="pt-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground mb-1">{title}</p>
+            <p className="text-2xl font-bold font-mono">{value}</p>
+            {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
+          </div>
+          <div className={`p-2 rounded-lg bg-muted/50`}>
+            <Icon className={`w-5 h-5 ${iconStyles[variant]}`} />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function ROICalculator() {
+  const [activeScenario, setActiveScenario] = useState("custom");
+  const [inputs, setInputs] = useState<ROIInputs>({
+    employees: 500,
+    averageSalary: 75000,
+    adoptionPercentage: 60,
+    weeklyProductivityGain: 7,
+    annualPlatformCost: 12000,
+    trainingCost: 5000,
+  });
+
+  const applyScenario = (key: string) => {
+    setActiveScenario(key);
+    if (key !== "custom") {
+      setInputs(SCENARIO_PRESETS[key].inputs);
+    }
+  };
+
+  const results = useMemo<ROIResults>(() => {
+    const adoptedEmployees = Math.round(inputs.employees * (inputs.adoptionPercentage / 100));
+    const hourlyRate = inputs.averageSalary / (WEEKS_PER_YEAR * 40);
+    
+    const annualProductivityValue = 
+      adoptedEmployees * inputs.weeklyProductivityGain * hourlyRate * WEEKS_PER_YEAR;
+    
+    const annualTotalCost = inputs.annualPlatformCost + inputs.trainingCost;
+    const netBenefit = annualProductivityValue - annualTotalCost;
+    const roiPercentage = annualTotalCost > 0 ? (netBenefit / annualTotalCost) * 100 : 0;
+    const paybackPeriodMonths = annualProductivityValue > 0 
+      ? (annualTotalCost / annualProductivityValue) * 12 
+      : 0;
+
+    return {
+      annualProductivityValue: Math.round(annualProductivityValue),
+      annualTotalCost: Math.round(annualTotalCost),
+      netBenefit: Math.round(netBenefit),
+      roiPercentage: Math.round(roiPercentage),
+      paybackPeriodMonths: Math.round(paybackPeriodMonths * 10) / 10,
+    };
+  }, [inputs]);
+
+  const updateInput = <K extends keyof ROIInputs>(key: K, value: ROIInputs[K]) => {
+    setActiveScenario("custom");
+    setInputs((prev) => ({ ...prev, [key]: value }));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Calculator className="w-5 h-5" />
+            ROI Calculator
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Calculate the business case for AI platform investment
+          </p>
+        </div>
+        <Badge variant="outline" className="flex items-center gap-1.5">
+          <BookOpen className="w-3.5 h-3.5" />
+          Research-backed methodology
+        </Badge>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm font-medium">Scenario Presets</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(SCENARIO_PRESETS).map(([key, preset]) => (
+              <Button
+                key={key}
+                variant={activeScenario === key ? "default" : "outline"}
+                size="sm"
+                onClick={() => applyScenario(key)}
+                data-testid={`scenario-${key}`}
+              >
+                {preset.label}
+              </Button>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {SCENARIO_PRESETS[activeScenario].description}
+          </p>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Organization Inputs</CardTitle>
+            <CardDescription>Enter your organization's details</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="employees" className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-muted-foreground" />
+                  Number of Employees
+                </Label>
+                <span className="font-mono text-sm">{inputs.employees.toLocaleString()}</span>
+              </div>
+              <Input
+                id="employees"
+                type="number"
+                min={1}
+                value={inputs.employees}
+                onChange={(e) => updateInput("employees", parseInt(e.target.value) || 0)}
+                data-testid="input-employees"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="salary" className="flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-muted-foreground" />
+                  Average Annual Salary
+                </Label>
+                <span className="font-mono text-sm">{formatCurrency(inputs.averageSalary)}</span>
+              </div>
+              <Input
+                id="salary"
+                type="number"
+                min={0}
+                step={1000}
+                value={inputs.averageSalary}
+                onChange={(e) => updateInput("averageSalary", parseInt(e.target.value) || 0)}
+                data-testid="input-salary"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2">
+                  <Percent className="w-4 h-4 text-muted-foreground" />
+                  Adoption Rate
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">Percentage of employees who will actively use the AI platform</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <span className="font-mono text-sm">{inputs.adoptionPercentage}%</span>
+              </div>
+              <Slider
+                value={[inputs.adoptionPercentage]}
+                onValueChange={([value]) => updateInput("adoptionPercentage", value)}
+                min={10}
+                max={100}
+                step={5}
+                data-testid="slider-adoption"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-muted-foreground" />
+                  Weekly Productivity Gain (hours)
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="w-3.5 h-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">Research shows 5-10 hours/week is typical (Larridin 2025)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+                <span className="font-mono text-sm">{inputs.weeklyProductivityGain}h</span>
+              </div>
+              <Slider
+                value={[inputs.weeklyProductivityGain]}
+                onValueChange={([value]) => updateInput("weeklyProductivityGain", value)}
+                min={1}
+                max={15}
+                step={0.5}
+                data-testid="slider-productivity"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Cost Inputs</CardTitle>
+            <CardDescription>Enter platform and implementation costs</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="platformCost" className="flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-muted-foreground" />
+                  Annual Platform Cost
+                </Label>
+                <span className="font-mono text-sm">{formatCurrency(inputs.annualPlatformCost)}</span>
+              </div>
+              <Input
+                id="platformCost"
+                type="number"
+                min={0}
+                step={1000}
+                value={inputs.annualPlatformCost}
+                onChange={(e) => updateInput("annualPlatformCost", parseInt(e.target.value) || 0)}
+                data-testid="input-platform-cost"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="trainingCost" className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-muted-foreground" />
+                  Training & Onboarding Cost
+                </Label>
+                <span className="font-mono text-sm">{formatCurrency(inputs.trainingCost)}</span>
+              </div>
+              <Input
+                id="trainingCost"
+                type="number"
+                min={0}
+                step={500}
+                value={inputs.trainingCost}
+                onChange={(e) => updateInput("trainingCost", parseInt(e.target.value) || 0)}
+                data-testid="input-training-cost"
+              />
+            </div>
+
+            <div className="pt-4 border-t space-y-2">
+              <p className="text-xs text-muted-foreground font-medium">Assumptions</p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                  {WEEKS_PER_YEAR} productive weeks per year
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                  40-hour work week baseline
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                  Conservative productivity estimates
+                </li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <MetricCard
+          title="Annual Productivity Value"
+          value={formatCurrency(results.annualProductivityValue)}
+          subtitle="Time saved converted to $"
+          icon={TrendingUp}
+          variant="success"
+        />
+        <MetricCard
+          title="Total Annual Cost"
+          value={formatCurrency(results.annualTotalCost)}
+          subtitle="Platform + Training"
+          icon={DollarSign}
+        />
+        <MetricCard
+          title="Net Benefit"
+          value={formatCurrency(results.netBenefit)}
+          subtitle="Value minus cost"
+          icon={Calculator}
+          variant={results.netBenefit > 0 ? "success" : "default"}
+        />
+        <MetricCard
+          title="ROI"
+          value={formatPercent(results.roiPercentage)}
+          subtitle={`Payback in ${results.paybackPeriodMonths} months`}
+          icon={Percent}
+          variant="primary"
+        />
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <TrendingUp className="w-4 h-4" />
+            3-Year Projection
+          </CardTitle>
+          <CardDescription>
+            Estimated cost vs. productivity value with compounding efficiency gains
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={[
+                  {
+                    name: "Year 1",
+                    Benefit: results.annualProductivityValue,
+                    Cost: results.annualTotalCost,
+                  },
+                  {
+                    name: "Year 2",
+                    Benefit: Math.round(results.annualProductivityValue * 1.15),
+                    Cost: results.annualTotalCost,
+                  },
+                  {
+                    name: "Year 3",
+                    Benefit: Math.round(results.annualProductivityValue * 1.25),
+                    Cost: results.annualTotalCost,
+                  },
+                ]}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-muted" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} className="text-xs" />
+                <YAxis
+                  tickFormatter={(val: number) => `$${(val / 1000).toFixed(0)}k`}
+                  axisLine={false}
+                  tickLine={false}
+                  className="text-xs"
+                />
+                <RechartsTooltip
+                  formatter={(value: number) => formatCurrency(value)}
+                  contentStyle={{
+                    borderRadius: "8px",
+                    border: "1px solid hsl(var(--border))",
+                    backgroundColor: "hsl(var(--card))",
+                    color: "hsl(var(--card-foreground))",
+                  }}
+                />
+                <Legend />
+                <Bar dataKey="Benefit" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Cost" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4 italic">
+            * Year 2 assumes 15% productivity improvement from maturity. Year 3 assumes 25% improvement. Annual cost held constant.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs text-muted-foreground">
+            <span className="font-medium">Research Sources:</span>
+            <Badge variant="outline">Larridin (2025)</Badge>
+            <Badge variant="outline">LSE/Protiviti (2024)</Badge>
+            <Badge variant="outline">McKinsey (2023)</Badge>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

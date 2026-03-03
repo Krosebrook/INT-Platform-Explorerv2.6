@@ -1,0 +1,1 @@
+export { CollaborationTab } from "./ui";

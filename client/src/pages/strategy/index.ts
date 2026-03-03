@@ -1,0 +1,1 @@
+export { StrategyTab } from './ui';

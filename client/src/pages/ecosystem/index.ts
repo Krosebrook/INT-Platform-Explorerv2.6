@@ -1,0 +1,1 @@
+export { MicrosoftEcosystemTab } from './ui';

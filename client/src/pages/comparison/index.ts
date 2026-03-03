@@ -1,0 +1,1 @@
+export { ComparisonTab } from './ui';
