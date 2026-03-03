@@ -107,8 +107,9 @@ export { MyPage } from "./ui";
 ```
 
 Then:
-- Register the route in `app/routes/`
-- Add a sidebar link in `widgets/sidebar-nav/`
+- Register the route in `app/routes/index.tsx` (add a `<Route>` in the `<Switch>`)
+- Add a sidebar nav item in `widgets/sidebar-nav/model.ts` (add to the appropriate `NAV_GROUPS` entry)
+- If the page needs `selectedPlatforms` state, thread it through `AppRoutesProps`
 
 ### Template: Creating a New Feature Module
 

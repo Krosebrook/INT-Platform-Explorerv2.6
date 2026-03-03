@@ -13,7 +13,7 @@ Enterprise decision-support tool for comparing AI platforms. Evaluate 16 AI plat
 - **Profile Builder**: Claude enterprise configuration guide
 - **Ecosystem View**: Microsoft ecosystem integration map
 
-> **Note:** The frontend is being refactored from a monolithic `components/` + `lib/` structure to [Feature-Sliced Design (FSD)](https://feature-sliced.design/). The `shared/` layer (UI, API, lib) is complete. Entity, feature, widget, and page scaffolding is in place. Migration of remaining components is ongoing.
+> The frontend has been fully refactored to [Feature-Sliced Design (FSD)](https://feature-sliced.design/). All components, hooks, and data files have been migrated to their FSD layers. Navigation uses a collapsible sidebar with wouter routing.
 
 ## Tech Stack
 
@@ -95,7 +95,7 @@ client/src/
     └── config/             # App configuration constants
 ```
 
-> **Legacy directories** (`client/src/components/`, `client/src/lib/`, `client/src/hooks/`) still exist during the migration and will be removed once all code is ported to the FSD layers above.
+> All legacy directories (`components/`, `lib/`, `hooks/`) have been removed. The FSD structure above is the sole source of truth.
 
 ### Backend & Shared
 
